@@ -1,0 +1,47 @@
+function [ImgDatasetX,ImgDatasetY] = DoSplit(ImgDataset, AList,ASamples,BList,BSamples,CList,CSamples,DList,DSamples,EList,ESamples,FList,FSamples)
+
+ImgDatasetX=containers.Map;
+ImgDatasetY=containers.Map;
+
+for i=1:length(AList)
+    if length(strmatch(AList(i,:),ASamples))==0
+        ImgDatasetX(AList(i,:))=ImgDataset(AList(i,:))
+    else
+        ImgDatasetY(AList(i,:))=ImgDataset(AList(i,:))
+    end    
+end
+for i=1:length(BList)
+    if length(strmatch(BList(i,:),BSamples))==0
+        ImgDatasetX(BList(i,:))=ImgDataset(BList(i,:))
+    else
+        ImgDatasetY(BList(i,:))=ImgDataset(BList(i,:))
+    end    
+end
+for i=1:length(CList)
+    if length(strmatch(CList(i,:),CSamples))==0
+        ImgDatasetX(CList(i,:))=ImgDataset(CList(i,:))
+    else
+        ImgDatasetY(CList(i,:))=ImgDataset(CList(i,:))
+    end    
+end
+for i=1:length(DList)
+    if length(strmatch(DList(i,:),DSamples))==0
+        ImgDatasetX(DList(i))=ImgDataset(DList(i))
+    else
+        ImgDatasetY(DList(i))=ImgDataset(DList(i))
+    end    
+end
+for i=1:length(EList)
+    if length(strmatch(EList(i),ESamples))==0
+        ImgDatasetX(EList(i))=ImgDataset(EList(i))
+    else
+        ImgDatasetY(EList(i))=ImgDataset(EList(i))
+    end    
+end
+for i=1:length(FList)
+    if length(strmatch(FList(i),FSamples))==0
+        ImgDatasetX(FList(i))=ImgDataset(FList(i))
+    else
+        ImgDatasetY(AList(i))=ImgDataset(AList(i))
+    end    
+end
