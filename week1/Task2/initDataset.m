@@ -13,8 +13,10 @@ function ImgDataSet = initDataset(gtFiles,thePath)
 ImgDataSet = containers.Map;
 
 for i=1:length(gtFiles)
+    %Compute the file names without paths or extensions
     CleanName=strrep(strrep(gtFiles(i).name,'.txt',''),'gt/gt.','');
     CleanName=CleanName((length(thePath)+1):end);
+    %Build the object and assign it into the dataset
     CrPhoto = PhotoInDataset;
     CrPhoto.PhotoName = strcat(CleanName,'.jpg');
     CrPhoto.PhotoGTFileAssociated = gtFiles(i).name;

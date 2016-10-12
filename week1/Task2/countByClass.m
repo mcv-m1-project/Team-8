@@ -1,3 +1,13 @@
+%countByClass: takes a dataset of images and returns the total number of
+%signals of each class on it.
+%
+%Input:
+%   -ImgDataset: Map of PhotoInDataset -> the dataset of images to explore
+%
+%Output:
+%   -byClass: Array of Double -> array containing the number of Signals in
+%   each class. It has the following order: [A,B,C,D,E,F].
+
 function byClass = countByClass(ImgDataset)
 
 byClass=zeros(6,1);

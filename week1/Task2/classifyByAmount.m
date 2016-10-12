@@ -1,3 +1,14 @@
+%classifyByAmount: Takes the image dataset and copies its images into
+%another of three datasets depending on the amount of signals it contains.
+%
+%Input: 
+%   -ImgDataset: Map of PhotoInDataset -> the image dataset to classify
+%
+%Output:
+%   -SingleS: Map of PhotoInDataset -> dataset of images of one signal
+%   -DoubleS: Map of PhotoInDataset -> dataset of images of two signals
+%   -TripleS: Map of PhotoInDataset -> dataset of images of three signal
+
 function [SingleS,DoubleS,TripleS]= classifyByAmount(ImgDataset)
 
 SingleS=containers.Map;
