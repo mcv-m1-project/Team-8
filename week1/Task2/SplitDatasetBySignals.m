@@ -47,3 +47,7 @@ TakeNfromMap(SingleSignals, ImgDatasetTrain, ImgDatasetValid, byClassRemainingUn
 byClassInTrainFinal = countByClass(ImgDatasetTrain);
 
 byClassInValidFinal = countByClass(ImgDatasetValid);
+
+%Store the results on two .txt files
+
+printSplitResults(ImgDatasetTrain,ImgDatasetValid,'TrainingImagesList.txt','ValidationImagesList.txt');

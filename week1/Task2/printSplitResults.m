@@ -1,8 +1,31 @@
-fileTrainingDataSet=fopen('PureTrainingImageList.txt','w+');
-fileValidationDataSet=fopen('ValidationImageList.txt','w+');
-for i=1:length(trainImages)
-    fprintf(fileTrainingDataSet, trainImages(i).FileName);
+%printSplitResults: takes two datasets and stores its image files into the
+%specified names.
+%
+%Input:
+%   -ImgDatasetX: Map of PhotoInDataset -> first dataset
+%   -ImgDatasetY: Map of PhotoInDataset -> second dataset
+%   -NameX: String -> name of the .txt file to store the first dataset
+%   -NameY: String -> name of the .txt file to store the second dataset
+
+function printSplitResults(ImgDatasetX,ImgDatasetY,NameX,NameY)
+
+keySetX = keys(ImgDatasetX);
+keySetY = keys(ImgDatasetY);
+
+fx=fopen(NameX,'w');
+
+for i=1:length(keySetX)
+    CrImg = ImgDatasetX(keySetX{i});
+    fprintf(fx,strcat(CrImg.PhotoName,'\n'));
 end
-for i=1:length(validationImages)
-    fprintf(fileTrainingDataSet, validationImages(i).FileName);
+
+fclose(fx);
+
+fy=fopen(NameY,'w');
+
+for i=1:length(keySetY)
+    CrImg = ImgDatasetY(keySetY{i});
+    fprintf(fy,strcat(CrImg.PhotoName,'\n'));
 end
+
+fclose(fy);
