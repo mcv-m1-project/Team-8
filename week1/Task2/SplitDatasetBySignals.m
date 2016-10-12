@@ -51,3 +51,8 @@ byClassInValidFinal = countByClass(ImgDatasetValid);
 %Store the results on two .txt files
 
 printSplitResults(ImgDatasetTrain,ImgDatasetValid,'TrainingImagesList.txt','ValidationImagesList.txt');
+
+%Build the file structure for the datasets into train and validation
+%folders
+
+BuildFileStructure(ImgDatasetTrain, ImgDatasetValid, strrep(PathLocation,'train/',''));
