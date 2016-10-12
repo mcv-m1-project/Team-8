@@ -1,3 +1,13 @@
+%ListTxtFilesWithPath: from a given directory it returns its containing
+%.txt file names including their path.
+%
+%Input:
+%   directory: String -> Directory to explore
+%
+%Output:
+%   files: Array of Strings -> Files on the directory
+
+
 function files = ListTxtFilesWithPath(directory)
 
 f = dir(directory);

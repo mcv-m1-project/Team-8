@@ -7,17 +7,17 @@ keySet = keys(ImgDataset);
 for i=1:length(keySet)
     CrImg=ImgDataset(keySet{i});
     if CrImg.PhotoAmountOfSignals == 1
-        if CrImg.PhotoFictionClass == 'A'
+        if CrImg.PhotoRealClass == 'A'
             byClass(1)=byClass(1)+1;
-        elseif CrImg.PhotoFictionClass == 'B'
+        elseif CrImg.PhotoRealClass == 'B'
             byClass(2)=byClass(2)+1;
-        elseif CrImg.PhotoFictionClass == 'C'
+        elseif CrImg.PhotoRealClass == 'C'
             byClass(3)=byClass(3)+1;
-        elseif CrImg.PhotoFictionClass == 'D'
+        elseif CrImg.PhotoRealClass == 'D'
             byClass(4)=byClass(4)+1;
-        elseif CrImg.PhotoFictionClass == 'E'
+        elseif CrImg.PhotoRealClass == 'E'
             byClass(5)=byClass(5)+1;
-        elseif CrImg.PhotoFictionClass == 'F'
+        elseif CrImg.PhotoRealClass == 'F'
             byClass(6)=byClass(6)+1;
         end
     elseif CrImg.PhotoAmountOfSignals == 2

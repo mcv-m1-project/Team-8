@@ -4,7 +4,7 @@ classdef PhotoInDataset
         PhotoName
         PhotoRealClass
         PhotoAmountOfSignals
-        PhotoFictionClass
+        PhotoGTFileAssociated
     end
     
 end
