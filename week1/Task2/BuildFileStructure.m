@@ -5,13 +5,11 @@ pathPureTrain = strcat(ThePath,'puretrain/');
 pathValidation = strcat(ThePath,'validation/');
 
 if exist(pathPureTrain)>0
-    print exist(PathPureTrain)
-    rmdir(pathpureTrain);
+    rmdir(pathPureTrain,'s');
 end
 
 if exist(pathValidation)>0
-    print exist(PathValidation)
-    rmdir(pathValidation);
+    rmdir(pathValidation,'s');
 end
 
 mkdir(pathPureTrain);

@@ -56,3 +56,14 @@ printSplitResults(ImgDatasetTrain,ImgDatasetValid,'TrainingImagesList.txt','Vali
 %folders
 
 BuildFileStructure(ImgDatasetTrain, ImgDatasetValid, strrep(PathLocation,'train/',''));
+
+%Check if datasets are equilibrated in a feature sense
+
+[FeatureTableTrain,SignalListTrain] = ExtractSignalFeatures(strrep(PathLocation,'train/','puretrain/'));
+[FeatureTableValid,SignalListValid] = ExtractSignalFeatures(strrep(PathLocation,'train/','validation/'));
+
+[summaryTrain, classes] = SummarizeSignalFeatures(FeatureTableTrain,SignalListTrain,'type');
+[summaryValid, classes] = SummarizeSignalFeatures(FeatureTableValid,SignalListValid,'type');
+
+PrintSummaries(summaryTrain, )
+
