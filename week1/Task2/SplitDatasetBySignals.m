@@ -6,7 +6,7 @@ clear all
 
 %Load the path, the list of files and the image dataset
 
-PathLocation = '/home/ihcv00/DataSet/train/';
+PathLocation = '/home/ihcv08/Ignasi/Datasets/train/';
 
 gtFiles=ListTxtFilesWithPath(strcat(PathLocation,'gt/'));
 
