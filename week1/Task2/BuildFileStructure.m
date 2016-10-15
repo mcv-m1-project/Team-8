@@ -1,6 +1,6 @@
 function BuildFileStructure(ImgDatasetTrain, ImgDatasetValid, ThePath)
 
-pathTrain = strcat(ThePath,'train/');
+pathTrain = strcat(ThePath(1:(length(ThePath)-7)),'train/');
 pathPureTrain = strcat(ThePath,'puretrain/');
 pathValidation = strcat(ThePath,'validation/');
 

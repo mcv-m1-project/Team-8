@@ -26,44 +26,53 @@ byClassWantedInTrain(5) = byClassWantedInTrain(5)-1;                        %Thi
 
 [SingleSignals, DoubleSignals, TripleSignals] = classifyByAmount(ImgDataset);
 
-%Assign images with more than one signal to the new datasets
+for WhichTrial=1:3
 
-[ImgDatasetTrain,ImgDatasetValid]=SplitMultiSignals(ImgDataset);
+    %Assign images with more than one signal to the new datasets
 
-%Compute how many signals we have in each by class and how many remain to
-%our ideal number
+    [ImgDatasetTrain,ImgDatasetValid]=SplitMultiSignals(ImgDataset);
 
-byClassInTrainOnlyMulti = countByClass(ImgDatasetTrain);
-byClassInValidOnlyMulti = countByClass(ImgDatasetValid);
-byClassRemainingUntilWantedInTrain = byClassWantedInTrain - byClassInTrainOnlyMulti;
+    %Compute how many signals we have in each by class and how many remain to
+    %our ideal number
 
-%Assign the images of one signal to the new datasets to obtain the amounts
-%we wanted
+    byClassInTrainOnlyMulti = countByClass(ImgDatasetTrain);
+    byClassInValidOnlyMulti = countByClass(ImgDatasetValid);
+    byClassRemainingUntilWantedInTrain = byClassWantedInTrain - byClassInTrainOnlyMulti;
 
-TakeNfromMap(SingleSignals, ImgDatasetTrain, ImgDatasetValid, byClassRemainingUntilWantedInTrain);
+    %Assign the images of one signal to the new datasets to obtain the amounts
+    %we wanted
 
-%Compute the amounts we have in each dataset by class
+    TakeNfromMap(SingleSignals, ImgDatasetTrain, ImgDatasetValid, byClassRemainingUntilWantedInTrain);
 
-byClassInTrainFinal = countByClass(ImgDatasetTrain);
+    %Compute the amounts we have in each dataset by class
 
-byClassInValidFinal = countByClass(ImgDatasetValid);
+    byClassInTrainFinal = countByClass(ImgDatasetTrain);
 
-%Store the results on two .txt files
+    byClassInValidFinal = countByClass(ImgDatasetValid);
 
-printSplitResults(ImgDatasetTrain,ImgDatasetValid,'TrainingImagesList.txt','ValidationImagesList.txt');
+    %Store the results on two .txt files
 
-%Build the file structure for the datasets into train and validation
-%folders
+    printSplitResults(ImgDatasetTrain,ImgDatasetValid,'TrainingImagesList.txt','ValidationImagesList.txt');
 
-BuildFileStructure(ImgDatasetTrain, ImgDatasetValid, strrep(PathLocation,'train/',''));
+    %Build the file structure for the datasets into train and validation
+    %folders
 
-%Check if datasets are equilibrated in a feature sense
+    TrialSubString = strcat('trial',int2str(WhichTrial));
+    TrialSubString=strcat(TrialSubString,'/');
+    TrialPath=strrep(PathLocation,'train/',TrialSubString)
 
-[FeatureTableTrain,SignalListTrain] = ExtractSignalFeatures(strrep(PathLocation,'train/','puretrain/'));
-[FeatureTableValid,SignalListValid] = ExtractSignalFeatures(strrep(PathLocation,'train/','validation/'));
+    BuildFileStructure(ImgDatasetTrain, ImgDatasetValid, TrialPath);
 
-[summaryTrain, classes] = SummarizeSignalFeatures(FeatureTableTrain,SignalListTrain,'type');
-[summaryValid, classes] = SummarizeSignalFeatures(FeatureTableValid,SignalListValid,'type');
+    %Check if datasets are equilibrated in a feature sense
 
-PrintSummaries(summaryTrain, )
+    [FeatureTableTrain,SignalListTrain] = ExtractSignalFeatures(strrep(PathLocation,'train/',strcat(TrialSubString,'puretrain/')));
+    [FeatureTableValid,SignalListValid] = ExtractSignalFeatures(strrep(PathLocation,'train/',strcat(TrialSubString,'validation/')));
+
+    [summaryTrain, classesTrain] = SummarizeSignalFeatures(FeatureTableTrain,SignalListTrain,'type');
+    [summaryValid, classesValid] = SummarizeSignalFeatures(FeatureTableValid,SignalListValid,'type');
+
+    PrintSummary(summaryTrain,strcat(TrialPath,'puretrain/PureTrainSummary.txt'),['A','B','C','D','E','F']);
+    PrintSummary(summaryTrain,strcat(TrialPath,'validation/ValidationSummary.txt'),['A','B','C','D','E','F']);
+    
+end
 
