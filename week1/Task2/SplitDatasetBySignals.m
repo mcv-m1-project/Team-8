@@ -6,7 +6,7 @@ clear all
 
 %Load the path, the list of files and the image dataset
 
-PathLocation = '/home/ihcv08/Ignasi/Datasets/train/';
+PathLocation = '/home/ihcv08/dataset/train/';
 
 gtFiles=ListTxtFilesWithPath(strcat(PathLocation,'gt/'));
 
@@ -72,7 +72,7 @@ for WhichTrial=1:3
     [summaryValid, classesValid] = SummarizeSignalFeatures(FeatureTableValid,SignalListValid,'type');
 
     PrintSummary(summaryTrain,strcat(TrialPath,'puretrain/PureTrainSummary.txt'),['A','B','C','D','E','F']);
-    PrintSummary(summaryTrain,strcat(TrialPath,'validation/ValidationSummary.txt'),['A','B','C','D','E','F']);
+    PrintSummary(summaryValid,strcat(TrialPath,'validation/ValidationSummary.txt'),['A','B','C','D','E','F']);
     
 end
 

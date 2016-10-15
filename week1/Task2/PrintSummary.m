@@ -40,7 +40,7 @@ for TheClass=1:length(Classes)
     fprintf(OutputFile,strcat(strcat('Stdv: ',num2str(TheSummary.filling_ratio(TheClass,4))),'; '));
     fprintf(OutputFile,'\n');
     fprintf(OutputFile,strcat(strcat('Frequency of ',Classes(TheClass)),': '));
-    fprintf(OutputFile,strcat(TheSummary.frequency(TheClass,1),'; '));
+    fprintf(OutputFile,strcat(num2str(TheSummary.frequency(TheClass,1)),'; '));
     for i=1:3
         fprintf(OutputFile,'\n');
     end  
