@@ -1,0 +1,72 @@
+------------------------------
+A
+------------------------------
+
+
+Height Values ofA:Min:83.8477;Max:37.5936;Mean:179.91;Stdv:29.75;
+Width Values ofA:Min:88.3855;Max:41.7309;Mean:205.89;Stdv:30.58;
+Form factor Values ofA:Min:1.0474;Max:0.086398;Mean:1.2276;Stdv:0.74504;
+Filling ratio Values ofA:Min:0.53452;Max:0.1508;Mean:1.0029;Stdv:0.45294;
+Frequency ofA:31;
+
+
+------------------------------
+B
+------------------------------
+
+
+Height Values ofB:Min:78.3275;Max:31.8972;Mean:121.22;Stdv:44.96;
+Width Values ofB:Min:83.3825;Max:29.3;Mean:120.82;Stdv:52.52;
+Form factor Values ofB:Min:1.0835;Max:0.085175;Mean:1.1681;Stdv:0.9967;
+Filling ratio Values ofB:Min:0.48657;Max:0.010423;Mean:0.49729;Stdv:0.47457;
+Frequency ofB:4;
+
+
+------------------------------
+C
+------------------------------
+
+
+Height Values ofC:Min:100.8914;Max:54.1668;Mean:237.65;Stdv:54.43;
+Width Values ofC:Min:95.7593;Max:58.6704;Mean:235.3;Stdv:35.69;
+Form factor Values ofC:Min:0.91603;Max:0.13308;Mean:1.0572;Stdv:0.64609;
+Filling ratio Values ofC:Min:1.4069;Max:0.82995;Mean:3.0799;Stdv:0.74298;
+Frequency ofC:14;
+
+
+------------------------------
+D
+------------------------------
+
+
+Height Values ofD:Min:77.8676;Max:31.7192;Mean:154.7;Stdv:33.58;
+Width Values ofD:Min:76.0319;Max:33.0817;Mean:162.94;Stdv:32.73;
+Form factor Values ofD:Min:0.97882;Max:0.11081;Mean:1.0804;Stdv:0.64859;
+Filling ratio Values ofD:Min:0.39727;Max:0.3882;Mean:0.77467;Stdv:0;
+Frequency ofD:21;
+
+
+------------------------------
+E
+------------------------------
+
+
+Height Values ofE:Min:113.0258;Max:57.9611;Mean:215.86;Stdv:55.2;
+Width Values ofE:Min:100.81;Max:55.2836;Mean:218.9;Stdv:54.96;
+Form factor Values ofE:Min:0.90527;Max:0.13955;Mean:1.0162;Stdv:0.57738;
+Filling ratio Values ofE:Min:0.89313;Max:0.30478;Mean:1.5488;Stdv:0.74123;
+Frequency ofE:12;
+
+
+------------------------------
+F
+------------------------------
+
+
+Height Values ofF:Min:111.8028;Max:44.0217;Mean:219.12;Stdv:49.31;
+Width Values ofF:Min:91.1633;Max:39.3843;Mean:217.6;Stdv:37.14;
+Form factor Values ofF:Min:0.82409;Max:0.18519;Mean:1.097;Stdv:0.44211;
+Filling ratio Values ofF:Min:0.97942;Max:0.013146;Mean:1;Stdv:0.94548;
+Frequency ofF:36;
+
+

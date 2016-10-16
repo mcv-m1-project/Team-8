@@ -49,7 +49,7 @@ function TrafficSignDetection_validation(input_dir, output_dir, chroma_mask_file
     
     for ii=1:size(files,1),
 
-        ii
+        fprintf('%s\n', files(ii).name);
         
         % Read file
         im = imread(strcat(input_dir,'/',files(ii).name));
