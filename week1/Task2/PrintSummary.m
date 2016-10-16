@@ -1,3 +1,14 @@
+%PrintSummary: Prints the feature data contained in TheSummary to the file
+%in ThePath.
+%
+%Input:
+%   -TheSummary: Struct -> Summary given at the ouput of
+%   SummarizeSignalFeatures, containing the feature information on the
+%   specified dataset
+%   -ThePath: String -> File to write, including its path
+%   -Classes: Array of Strings -> label of the class of each signal in
+%   TheSummary
+
 function PrintSummary(TheSummary, ThePath, Classes)
 
 OutputFile = fopen(ThePath,'w');
