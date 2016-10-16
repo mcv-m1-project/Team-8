@@ -1,7 +1,3 @@
-%
-% Template example for using on the validation set.
-% 
- 
 function TrafficSignDetection(directory, chroma_mask_file)
     % TrafficSignDetection
     % Perform detection of Traffic signs on images. Detection is performed first at the pixel level
@@ -12,10 +8,10 @@ function TrafficSignDetection(directory, chroma_mask_file)
     %    Parameter name      Value
     %    --------------      -----
     %    'directory'         directory where the test images to analize  (.jpg) reside
-    %    'pixel_method'      Name of the color space: 'opp', 'normrgb', 'lab', 'hsv', etc. (Weeks 2-5)
-    %    'window_method'     'SegmentationCCL' or 'SlidingWindow' (Weeks 3-5)
-    %    'decision_method'   'GeometricHeuristics' or 'TemplateMatching' (Weeks 4-5)
-
+    %    'chroma_mask_file'  mat file containing the chroma mask to use in
+    %                        color segmentation. It must contain a matrix
+    %                        with name 'chroma_mask' with the result of
+    %                        the CreateColorMask() function.
 
     global CANONICAL_W;        CANONICAL_W = 64;
     global CANONICAL_H;        CANONICAL_H = 64;
@@ -26,7 +22,7 @@ function TrafficSignDetection(directory, chroma_mask_file)
     global SW_MINS;            SW_MINS = 1;
     global SW_MAXS;            SW_MAXS = 2.5;
     global SW_STRIDES;         SW_STRIDES = 1.2;
-    
+
     % Extract chroma model from given mask
     load(chroma_mask_file, 'chroma_mask');
     [chroma_model_a, chroma_model_b] = find(chroma_mask);

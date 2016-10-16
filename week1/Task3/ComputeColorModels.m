@@ -3,7 +3,7 @@ function [prob_chr, prob_lum, labels] = ComputeColorModels(histo_chr, histo_lum,
     % The function compute a color model for each signal class 
     % ('A', 'B', ..., 'F').
     %
-    % The color probability model of a signal is its color probability distribution,
+    % The color model of a signal is its color probability distribution,
     % splited into Hue-Saturation probability and Lightness probability.
     %
     %   function [prob_chr, prob_lum, labels] = ComputeColorModels(histo_chr, histo_lum, class)

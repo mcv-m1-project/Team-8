@@ -1,8 +1,4 @@
-%
-% Template example for using on the test set (no annotations).
-% 
- 
-function TrafficSignDetection_validation(input_dir, output_dir, pixel_method, window_method, decision_method)
+function TrafficSignDetection_validation(input_dir, output_dir, chroma_mask_file)
     % TrafficSignDetection
     % Perform detection of Traffic signs on images. Detection is performed first at the pixel level
     % using a color segmentation. Then, using the color segmentation as a basis, the most likely window 
@@ -13,9 +9,10 @@ function TrafficSignDetection_validation(input_dir, output_dir, pixel_method, wi
     %    --------------      -----
     %    'input_dir'         Directory where the test images to analize  (.jpg) reside
     %    'output_dir'        Directory where the results are stored
-    %    'pixel_method'      Name of the color space: 'opp', 'normrgb', 'lab', 'hsv', etc. (Weeks 2-5)
-    %    'window_method'     'SegmentationCCL' or 'SlidingWindow' (Weeks 3-5)
-    %    'decision_method'   'GeometricHeuristics' or 'TemplateMatching' (Weeks 4-5)
+    %    'chroma_mask_file'  Mat file containing the chroma mask to use in
+    %                        color segmentation. It must contain a matrix
+    %                        with name 'chroma_mask' with the result of
+    %                        the CreateColorMask() function.
 
 
     global CANONICAL_W;        CANONICAL_W = 64;
@@ -44,6 +41,10 @@ function TrafficSignDetection_validation(input_dir, output_dir, pixel_method, wi
     %   triangleTemplate  = load('TemplateTriangles.mat');
     %end
 
+    % Extract chroma model from given mask
+    load(chroma_mask_file, 'chroma_mask');
+    [chroma_model_a, chroma_model_b] = find(chroma_mask);
+    chroma_model = [chroma_model_a.'; chroma_model_b.'].';
     files = ListFiles(input_dir);
     
     for ii=1:size(files,1),
@@ -54,8 +55,8 @@ function TrafficSignDetection_validation(input_dir, output_dir, pixel_method, wi
         im = imread(strcat(input_dir,'/',files(ii).name));
      
         % Candidate Generation (pixel) %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        pixelCandidates = CandidateGenerationPixel_Color(im, pixel_method);
-        
+        % pixelCandidates = CandidateGenerationPixel_Color(im, pixel_method);
+        pixelCandidates = ColorSegmentation(im, chroma_model);
         
         % Candidate Generation (window)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % windowCandidates = CandidateGenerationWindow_Example(im, pixelCandidates, window_method); %%'SegmentationCCL' or 'SlidingWindow'  (Needed after Week 3)
