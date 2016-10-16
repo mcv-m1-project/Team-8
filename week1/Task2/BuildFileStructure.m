@@ -1,3 +1,16 @@
+%BuildFileStructure: Takes both pure training and validation datasets and
+%stores them into two folders on the specified path, taking the files from
+%the original train folder.
+%
+%Input:
+%   -ImgDatasetTrain: Map of PhotoInDataset -> Dataset of pure training
+%   image files
+%   -ImgDatasetValid: Map of PhotoInDataset -> Dataset of validation image
+%   files
+%   -ThePath: String ->Path to the folder where the pure training and the
+%   validation folders will be allocated
+
+
 function BuildFileStructure(ImgDatasetTrain, ImgDatasetValid, ThePath)
 
 pathTrain = strcat(ThePath(1:(length(ThePath)-7)),'train/');
