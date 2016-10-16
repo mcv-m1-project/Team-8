@@ -1,4 +1,4 @@
-function TrafficSignDetection_validation(input_dir, output_dir, chroma_mask_file)
+function TrafficSignDetection_validation(input_dir, output_dir, model_file)
     % TrafficSignDetection
     % Perform detection of Traffic signs on images. Detection is performed first at the pixel level
     % using a color segmentation. Then, using the color segmentation as a basis, the most likely window 
@@ -9,7 +9,7 @@ function TrafficSignDetection_validation(input_dir, output_dir, chroma_mask_file
     %    --------------      -----
     %    'input_dir'         Directory where the test images to analize  (.jpg) reside
     %    'output_dir'        Directory where the results are stored
-    %    'chroma_mask_file'  Mat file containing the chroma mask to use in
+    %    'model_file'        Mat file containing the chroma mask to use in
     %                        color segmentation. It must contain a matrix
     %                        with name 'chroma_mask' with the result of
     %                        the CreateColorMask() function.
@@ -42,7 +42,7 @@ function TrafficSignDetection_validation(input_dir, output_dir, chroma_mask_file
     %end
 
     % Extract chroma model from given mask
-    load(chroma_mask_file, 'chroma_mask');
+    load(model_file, 'chroma_mask');
     [chroma_model_a, chroma_model_b] = find(chroma_mask);
     chroma_model = [chroma_model_a.'; chroma_model_b.'].';
     files = ListFiles(input_dir);

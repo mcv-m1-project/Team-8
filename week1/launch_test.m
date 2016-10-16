@@ -1,2 +1,2 @@
 addpath(genpath('.'))
-TrafficSignDetection_test('./dataset/test', './dataset/test', 'chroma_mask.mat');
+TrafficSignDetection_test('./dataset/test', './dataset/test', 'model.mat');
