@@ -18,8 +18,9 @@ function [im_mask] = ColorSegmentation(im, chroma_model)
     % and with pixel value 1 for each positive detection in the image.
     %
     % After compute the mask corresponding to chroma_model, the mask
-    % is thresholding for the lightness channel using a fixed threshold
-    % to reduce false positives.
+    % is thresholding for an aditional saturation threshold, in order to
+    % reduce false positives corresponding to low saturated colors
+    % (chroma_model tends to include these as candidates.)
     
     % Convert to HSL color space
     im = colorspace('RGB->HSL', double(im) / 255);
@@ -32,7 +33,6 @@ function [im_mask] = ColorSegmentation(im, chroma_model)
     % Quantization and shift
     h = floor(h / 20) + 1;        % range 1:19
     s = floor(s * 9) + 1;         % range 1:10
-    l = floor(l * 9) + 1;         % range 1:10
 
     % Chroma segmentation
     h = reshape(h, [size(im,1) * size(im,2), 1]);
@@ -42,10 +42,10 @@ function [im_mask] = ColorSegmentation(im, chroma_model)
     positive = ismember(chr, chroma_model, 'rows');
     chr_mask = reshape(positive, [size(im,1), size(im,2)]);
 
-    % Luminance segmentation
-    lum_mask = (l > 2) & (l < 6);
+    % Extra saturation threshold
+    sat_mask = im(:,:, 2) > 0.3;
 
     % Final segmentation
-    im_mask = chr_mask & lum_mask;
+    im_mask = chr_mask & sat_mask;
 end
 
