@@ -2,7 +2,7 @@
 % Template example for using on the validation set.
 % 
  
-function TrafficSignDetection(directory, pixel_method, window_method, decision_method)
+function TrafficSignDetection(directory, chroma_mask_file)
     % TrafficSignDetection
     % Perform detection of Traffic signs on images. Detection is performed first at the pixel level
     % using a color segmentation. Then, using the color segmentation as a basis, the most likely window 
@@ -26,7 +26,11 @@ function TrafficSignDetection(directory, pixel_method, window_method, decision_m
     global SW_MINS;            SW_MINS = 1;
     global SW_MAXS;            SW_MAXS = 2.5;
     global SW_STRIDES;         SW_STRIDES = 1.2;
-
+    
+    % Extract chroma model from given mask
+    load(chroma_mask_file, 'chroma_mask');
+    [chroma_model_a, chroma_model_b] = find(chroma_mask);
+    chroma_model = [chroma_model_a.'; chroma_model_b.'].';
 
     % Load models
     %global circleTemplate;
@@ -49,14 +53,15 @@ function TrafficSignDetection(directory, pixel_method, window_method, decision_m
     files = ListFiles(directory);
     
     for i=1:size(files,1),
-
-        i
         
+        fprintf('%s\n', files(i).name);
+
         % Read file
         im = imread(strcat(directory,'/',files(i).name));
      
         % Candidate Generation (pixel) %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        pixelCandidates = CandidateGenerationPixel_Color(im, pixel_method);
+        %pixelCandidates = CandidateGenerationPixel_Color(im, pixel_method);
+        pixelCandidates = ColorSegmentation(im, chroma_model);
         
         
         % Candidate Generation (window)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
