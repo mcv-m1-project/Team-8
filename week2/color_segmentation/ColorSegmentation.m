@@ -1,4 +1,4 @@
-function [im_mask] = ColorSegmentation(im, chroma_model)
+function [mask] = ColorSegmentation(im, model)
     % ColorSegmentation
     % Apply color segmentation taking as positive pixels those with
     % hue-saturation values in chroma_model.
@@ -37,15 +37,21 @@ function [im_mask] = ColorSegmentation(im, chroma_model)
     % Chroma segmentation
     h = reshape(h, [size(im,1) * size(im,2), 1]);
     s = reshape(s, [size(im,1) * size(im,2), 1]);
-    chr = [h.'; s.'].';
+    
+    n_rows = 19;
+    idx = (s - 1) * n_rows + h;
+    mask = zeros(size(im,1), size(im,2));
+    
+    for i=1:size(model, 3)
+        model_i = model(:,:,i);
+        mask_i = reshape(model_i(idx), size(mask));
+        mask = mask | mask_i;
+    end
 
-    positive = ismember(chr, chroma_model, 'rows');
-    chr_mask = reshape(positive, [size(im,1), size(im,2)]);
-
-    % Extra saturation threshold
-    sat_mask = im(:,:, 2) > 0.3;
-
-    % Final segmentation
-    im_mask = chr_mask & sat_mask;
+%     % Extra saturation threshold
+%     sat_mask = im(:,:, 2) > 0.3;
+% 
+%     % Final segmentation
+%     im_mask = chr_mask & sat_mask;
 end
 
