@@ -13,9 +13,8 @@ function [summary, classes] = SummarizeSignalFeatures (features, signs, group_by
   % - 'type':  group by signal type (A, B, C, D, E, F).
   % - 'shape': group by signal shape (triangle, inverted triangle,
   %            circle, rectangle).
-  % - 'color': group by signal color (red on white [A & B types],
-  %            white on red [C type], white on blue [D & F types],
-  %            and red on blue [E type];
+  % - 'color': group by signal color (red-white-black [A, B & C types],
+  %            blue-white-black [D & F types], and red-blue [E type];
   %
   %
   % Parameter name   Value
@@ -42,12 +41,10 @@ function [summary, classes] = SummarizeSignalFeatures (features, signs, group_by
       classes = {'A', 'B', 'C', 'D', 'E', 'F'};
     case 'shape'
       filters = {'A', 'B', 'CDE', 'F'};
-      classes = {'triangle', 'inverted_triangle', 'circle', ...
-		 'rectangle'};
+      classes = {'triangle', 'inverted_triangle', 'circle', 'rectangle'};
     case 'color'
-      filters = {'AB', 'C', 'DF', 'E'};
-      classes = {'red_white', 'white_red', 'white_blue', ...
-		 'red_blue'};
+      filters = {'ABC', 'DF', 'E'};
+      classes = {'red_white_black', 'blue_white_black', 'red_blue'};
     otherwise
       error('invalid value: group_by');
   end
