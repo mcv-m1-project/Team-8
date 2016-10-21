@@ -1,4 +1,4 @@
-function [prob_chr, prob_lum, classes] = ComputeColorModels(histo_chr, histo_lum, class)
+function [prob_chr, prob_lum] = ComputeColorModel(histo_chr, histo_lum, class)
     % ComputeColorModels
     % The function compute 3 color models by grouping the signals according
     % to the following criteria:
@@ -36,8 +36,7 @@ function [prob_chr, prob_lum, classes] = ComputeColorModels(histo_chr, histo_lum
     % The 6x1 column vector 'labels' contains the label of each class:
     % 'red_white_black', 'blue_white_black', 'red_blue'.
     
-    filters = {'ABC', 'DF', 'E'};
-    classes = {'red_white_black', 'blue_white_black', 'red_blue'};
+    filters = {'ABC', 'DF', 'E'};  % classes: 'red_white_black', 'blue_white_black', 'red_blue'
     prob_chr = zeros(size(histo_chr, 1), size(histo_chr, 2), 3);
     prob_lum = zeros(size(histo_lum, 2), 3);
     
