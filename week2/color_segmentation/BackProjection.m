@@ -1,6 +1,9 @@
-function [proj] = BackProjection(im, model)
-    % Convert to HSL color space
-    im = colorspace('RGB->HSL', double(im) / 255);
+function [proj] = BackProjection(im, model, color_conversion)
+    
+    % Convert to HSL color space if needed
+    if (nargin == 3) & color_conversion
+        im = colorspace('RGB->HSL', double(im) / 255);
+    end
 
     % Split channels
     h = im(:,:,1);

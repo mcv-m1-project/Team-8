@@ -13,14 +13,14 @@ function TrafficSignDetection(directory, model, threshold)
     %                        with name 'chroma_mask' with the result of
     %                        the CreateColorMask() function.
 
-    model = model >= threshold;
+    % Flatten the model by getting the maximum probability of each layer
+    model = max(model, [], 3);
     
     pixelTP=0; pixelFN=0; pixelFP=0; pixelTN=0;
     files = ListFiles(directory);
     
     tic
     
-    figure
     for i=1:size(files,1),
         
         fprintf('%04d: %s\n', i, files(i).name);
@@ -29,11 +29,15 @@ function TrafficSignDetection(directory, model, threshold)
         im = imread(strcat(directory,'/',files(i).name));
         
         % Candidate Generation (pixel) %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        pixelCandidates = ColorSegmentation(im, model);
+        im = colorspace('RGB->HSL', double(im) / 255);
         
-%         imshow(pixelCandidates);
-%         pause;
+        pixelCandidates = BackProjection(im, model) >= threshold;
+        pixelCandidates = pixelCandidates & (im(:,:,2) > 0.3);
         
+        pixelCandidates = imfill(pixelCandidates,'holes');
+        pixelCandidates = imopen(pixelCandidates, strel('disk', 24));
+        pixelCandidates = imdilate(pixelCandidates, strel('disk',4));
+                
         % Candidate Generation (window)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % windowCandidates = CandidateGenerationWindow_Example(im, pixelCandidates, window_method); %%'SegmentationCCL' or 'SlidingWindow'  (Needed after Week 3)
         
@@ -48,6 +52,7 @@ function TrafficSignDetection(directory, model, threshold)
 
     % Plot performance evaluation
     [pixelPrecision, pixelAccuracy, pixelSpecificity, pixelSensitivity] = PerformanceEvaluationPixel(pixelTP, pixelFP, pixelFN, pixelTN);
+    
     
     [pixelPrecision, pixelAccuracy, pixelSpecificity, pixelSensitivity]
     

@@ -1,7 +1,9 @@
 addpath(genpath('.'))
 
 [hc, hl, cl] = ExtractHistograms('/home/ihcv08/dataset/trial3/puretrain');
-[model, prob_lum] = ComputeColorModel(hc, hl, cl);
+[color_model, lum_model] = ComputeColorModel(hc, hl, cl);
+
+save color_model.mat color_model;
 
 figure
 
