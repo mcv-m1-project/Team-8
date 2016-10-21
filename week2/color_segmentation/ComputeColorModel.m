@@ -33,7 +33,7 @@ function [prob_chr, prob_lum] = ComputeColorModel(histo_chr, histo_lum, class)
     % The 'prob_lum' matrix has dimension 6x10 and represent the respective
     % probabilities for the (quantized) Lightness channel.
     %
-    % The 6x1 column vector 'labels' contains the label of each class:
+    %
     % 'red_white_black', 'blue_white_black', 'red_blue'.
     
     filters = {'ABC', 'DF', 'E'};  % classes: 'red_white_black', 'blue_white_black', 'red_blue'
@@ -54,4 +54,3 @@ function [prob_chr, prob_lum] = ComputeColorModel(histo_chr, histo_lum, class)
         prob_lum(:,i) = sum(histo_lum(mask,:), 1) / n;
     end
 end
-
