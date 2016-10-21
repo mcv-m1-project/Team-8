@@ -1,5 +1,7 @@
+addpath(genpath('.'))
+
 [hc, hl, cl] = ExtractHistograms('/home/ihcv08/dataset/trial3/puretrain');
-[model, prob_lum, classes] = ComputeColorModels(hc, hl, cl);
+[model, prob_lum] = ComputeColorModel(hc, hl, cl);
 
 figure
 
