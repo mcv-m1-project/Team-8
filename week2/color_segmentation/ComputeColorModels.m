@@ -1,7 +1,17 @@
+<<<<<<< HEAD
 function [prob_chr, prob_lum, labels] = ComputeColorModels(histo_chr, histo_lum, class)
     % ComputeColorModels
     % The function compute a color model for each signal class 
     % ('A', 'B', ..., 'F').
+=======
+function [prob_chr, prob_lum, classes] = ComputeColorModels(histo_chr, histo_lum, class)
+    % ComputeColorModels
+    % The function compute 3 color models by grouping the signals according
+    % to the following criteria:
+    % - 'red_white_black': signal types A, B and C. 
+    % - 'blue_white_black': signal types D and F.
+    % - 'red_blue': signal type E.
+>>>>>>> block2-task4
     %
     % The color model of a signal is its color probability distribution,
     % splited into Hue-Saturation probability and Lightness probability.
@@ -31,6 +41,7 @@ function [prob_chr, prob_lum, labels] = ComputeColorModels(histo_chr, histo_lum,
     % probabilities for the (quantized) Lightness channel.
     %
     % The 6x1 column vector 'labels' contains the label of each class:
+<<<<<<< HEAD
     % 'A', 'B', ..., 'F'.
     
     labels = 'ABCDEF'.';
@@ -43,6 +54,27 @@ function [prob_chr, prob_lum, labels] = ComputeColorModels(histo_chr, histo_lum,
         n = sum(sum(histo_lum(mask, :), 1));     
         prob_chr(i,:,:) = sum(histo_chr(:,:, mask), 3) / n;
         prob_lum(i,:) = sum(histo_lum(mask, :), 1) / n;
+=======
+    % 'red_white_black', 'blue_white_black', 'red_blue'.
+    
+    filters = {'ABC', 'DF', 'E'};
+    classes = {'red_white_black', 'blue_white_black', 'red_blue'};
+    prob_chr = zeros(size(histo_chr, 1), size(histo_chr, 2), 3);
+    prob_lum = zeros(size(histo_lum, 2), 3);
+    
+    for i = 1:size(filters, 2)
+        % create mask to filter by group
+        mask = zeros(size(class));
+        filter = filters{i};
+        for j = 1:size(filter, 2)
+            mask = mask | class == filter(j);
+        end
+        
+        % compute color probability distribution
+        n = sum(sum(histo_lum(mask, :), 1));  
+        prob_chr(:,:,i) = sum(histo_chr(:,:,mask), 3) / n;
+        prob_lum(:,i) = sum(histo_lum(mask,:), 1) / n;
+>>>>>>> block2-task4
     end
 end
 

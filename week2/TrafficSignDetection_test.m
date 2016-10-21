@@ -58,6 +58,18 @@ function TrafficSignDetection_validation(input_dir, output_dir, model_file)
         % pixelCandidates = CandidateGenerationPixel_Color(im, pixel_method);
         pixelCandidates = ColorSegmentation(im, chroma_model);
         
+        %Structuring element of size 24 performs the best F1 score. Disk is
+        %used as the object rotation is invariant when using this approach.
+        tridiskmin = strel('disk',15);
+        
+        % First we fill the false negatives concerned inside the signal to
+        % get better representations of the object regions.
+        pixelCandidates = imfill(pixelCandidates,'holes');
+        
+        %Opening is applied in means of remove all the particular elements
+        %which have smaller radius than the structuring element
+        pixelCandidates = imopen(pixelCandidates,tridiskmin);
+        
         % Candidate Generation (window)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % windowCandidates = CandidateGenerationWindow_Example(im, pixelCandidates, window_method); %%'SegmentationCCL' or 'SlidingWindow'  (Needed after Week 3)
 
