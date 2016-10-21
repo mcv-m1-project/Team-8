@@ -1,4 +1,4 @@
-function TrafficSignDetection_validation(input_dir, output_dir, model_file)
+function TrafficSignDetection_test(input_dir, output_dir, model_file)
     % TrafficSignDetection
     % Perform detection of Traffic signs on images. Detection is performed first at the pixel level
     % using a color segmentation. Then, using the color segmentation as a basis, the most likely window 
@@ -60,15 +60,19 @@ function TrafficSignDetection_validation(input_dir, output_dir, model_file)
         
         %Structuring element of size 24 performs the best F1 score. Disk is
         %used as the object rotation is invariant when using this approach.
-        tridiskmin = strel('disk',15);
+        tridiskmin = strel('disk',24);
         
-        % First we fill the false negatives concerned inside the signal to
+        % First fill the false negatives concerned inside the signal to
         % get better representations of the object regions.
         pixelCandidates = imfill(pixelCandidates,'holes');
         
         %Opening is applied in means of remove all the particular elements
         %which have smaller radius than the structuring element
         pixelCandidates = imopen(pixelCandidates,tridiskmin);
+        
+        %Dilation is finally applied to reconstruct some contours erased by
+        %the previuous opening
+        pixelCandidates = imdilate(pixelCandidates,strel('disk',4));
         
         % Candidate Generation (window)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % windowCandidates = CandidateGenerationWindow_Example(im, pixelCandidates, window_method); %%'SegmentationCCL' or 'SlidingWindow'  (Needed after Week 3)

@@ -45,7 +45,9 @@ function rocaccumulation = TrafficSignFiltering(directory, mask_directory)
 
     % windowTP=0; windowFN=0; windowFP=0; % (Needed after Week 3)
     
-    iterations = 100;
+    %Iterations represents de variable size of the structuring element to perfrom
+    %the ROC curve 
+    iterations = 30;
     files = ListFiles(directory);
     rocaccumulation = zeros(iterations,2);
     mask_files = ListFiles(mask_directory);
@@ -62,13 +64,14 @@ for k=1:iterations,
         % Candidate Generation (pixel) %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
         tridiskmin = strel('disk',k);
- 
+        
         pixelCandidates_1 = imfill(pixelCandidates_1,'holes');
 
         pixelCandidates_tri = imopen(pixelCandidates_1,tridiskmin);
   
-        pixelCandidates = pixelCandidates_tri;
-
+        pixelCandidates = imdilate(pixelCandidates_tri,strel('disk',4));
+        
+        %pixelCandidates = pixelCandidates_tri;
         %pixelCandidates = imopen(pixelCandidates_1,sedisk);
         % Candidate Generation (window)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % windowCandidates = CandidateGenerationWindow_Example(im, pixelCandidates, window_method); %%'SegmentationCCL' or 'SlidingWindow'  (Needed after Week 3)        
@@ -95,6 +98,7 @@ for k=1:iterations,
     [pixelPrecision, pixelAccuracy, pixelSpecificity, pixelSensitivity]
     rocaccumulation(k,1) = pixelPrecision;
     rocaccumulation(k,2) = pixelSensitivity;
+    
     % [windowPrecision, windowSensitivity]
 end
 
