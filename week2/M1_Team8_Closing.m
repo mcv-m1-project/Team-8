@@ -1,13 +1,13 @@
 function OutputImg = M1_Team8_Closing (InputImg, structel, struCent, Times)
 
+if Times>1
+    [structel,struCent]=ErodeStructel(structel, struCent, Times-1);
+end
+
 ProcessedImg = InputImg;
 
-for i=1:Times
-  ProcessedImg = M1_Team8_Dilation(ProcessedImg,structel,struCent);
-end
+ProcessedImg = M1_Team8_Dilation(ProcessedImg,structel,struCent);
 
-for i=1:Times
-  ProcessedImg = M1_Team8_Erosion(ProcessedImg,structel,struCent);
-end
+ProcessedImg = M1_Team8_Erosion(ProcessedImg,structel,struCent);
 
 OutputImg=ProcessedImg;
