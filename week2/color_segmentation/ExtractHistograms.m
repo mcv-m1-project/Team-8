@@ -22,8 +22,6 @@ function [histo_chr, histo_lum, class] = ExtractHistograms(dir)
     % The 'histo_lum' matrix has dimension Nx10, where N is the total
     % number of signals. Columns represent Lightness values, after
     % quatizing and shifting to the range [1:10].
-
-    addpath(genpath('..'));  % needed to use ListFiles()
     
     histo_chr = [];
     histo_lum = [];
