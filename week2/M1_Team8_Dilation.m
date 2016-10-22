@@ -1,3 +1,12 @@
+%function M1_Team8_Dilation: Performs the morphological dilation of an 
+%image.
+%
+%Input
+%   -InputImg: Matrix of numbers -> the image to be dilated
+%   -structel: Matrix of numbers -> the structuring element to use
+%   -struCent: Array of Integer -> center of the structuring element
+%
+%Output
 function OutputImg = M1_Team8_Dilation (InputImg, structel, struCent)
 
 [M,N]=size(InputImg);

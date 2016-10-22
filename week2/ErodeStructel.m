@@ -1,3 +1,14 @@
+%function ErodeStructel: takes a structuring element an erodes it using
+%itself
+%
+%Input
+%   -structel: Matrix of numbers -> the structuring element to erode
+%   -struCent: Array of Integer -> center of the structuring element
+%   -Times: Integer -> times to be eroded
+%
+%Output
+%   -NewStructel: the eroded structuring element
+%   -NewStruCent: the center of the eroded structuring element
 function [NewStructel,NewStruCent] = ErodeStructel(structel,struCent,times)
 
 NewStructel = 255*ones(((times+1)*size(structel))-times);

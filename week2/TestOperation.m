@@ -1,3 +1,15 @@
+%function TestOperation: gives the computation time of an operation
+%implemented by Matlab and by ourselves
+%
+%Input
+%   -operation: Char -> operation to test
+%   -testImg: Matrix of numbers -> image to use to test the operators
+%   -structel: Matrix of numbers -> the structuring element to use
+%   -struCent: Array of Integer -> center of the structuring element
+%
+%Output
+%   -timeMatlab: Double -> time that takes matlab operator to run
+%   -timeCustom: Double -> time that takes our operator to run
 function [timeMatlab, timeCustom] = TestOperation(operation,testImg,structel,struCent)
 
 if operation == 'D'

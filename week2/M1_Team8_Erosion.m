@@ -1,3 +1,13 @@
+%function M1_Team8_Erosion: Performs the morphological erosion of an 
+%image.
+%
+%Input
+%   -InputImg: Matrix of numbers -> the image to be eroded
+%   -structel: Matrix of numbers -> the structuring element to use
+%   -struCent: Array of Integer -> center of the structuring element
+%
+%Output
+%   -OutputImg: The eroded image
 function OutputImg = M1_Team8_Erosion (InputImg, structel, struCent)
 
 [M,N]=size(InputImg);

@@ -1,3 +1,8 @@
+%function makeTest: prints a test of the computation time of matlab's and
+%our implementation of the operator
+%
+%Input
+%   -outFileName: String -> file where the test will be printed
 function makeTest(outFileName)
 
 outFile=fopen(outFileName,'w');
@@ -105,7 +110,7 @@ fprintf(outFile,' seconds\n');
 
 fprintf(outFile,'Custom:');
 
-fprintf(outFile,int2str(timeCustom));
+fprintf(outFile,num2str(timeCustom));
 
 fprintf(outFile,' seconds\n');
 
@@ -131,7 +136,7 @@ fprintf(outFile,' seconds\n');
 
 fprintf(outFile,'Custom:');
 
-fprintf(outFile,int2str(timeCustom));
+fprintf(outFile,num2str(timeCustom));
 
 fprintf(outFile,' seconds\n');
 
@@ -157,6 +162,6 @@ fprintf(outFile,' seconds\n');
 
 fprintf(outFile,'Custom:');
 
-fprintf(outFile,int2str(timeCustom));
+fprintf(outFile,num2str(timeCustom));
 
 fprintf(outFile,' seconds\n');
