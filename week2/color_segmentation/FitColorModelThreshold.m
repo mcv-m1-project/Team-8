@@ -1,10 +1,19 @@
 function [summary] = FitColorModelThreshold(valid_dir, thresholds)
-%FITCOLORMODELTHRESHOLD Summary of this function goes here
-%   Detailed explanation goes here
-
-% require load path ../evaluation/
+% FitColorModelThreshold
+% Given a folder with backprojected images, this function apply
+% several thresholds to them and compare the results with the ground
+% thruth. The final result will be a confusion matrix for each threshold
+% applied.
 %
-% summary: matrix Nx4 with columns [TP, FP, FN, TN]
+%   function [summary] = FitColorModelThreshold(valid_dir, thresholds)
+%
+%    Parameter name      Value
+%    --------------      -----
+%    valid_dir           Directory with the backprojected images.
+%    thresholds          Vector with N thresholds to be tested.
+%
+% The N confusion matrix are stacked into 'summary', with columns
+% [TP, FP, FN, TN].
 
     summary = zeros(size(thresholds, 2), 4);
     files = ListFiles(valid_dir);
@@ -23,19 +32,19 @@ function [summary] = FitColorModelThreshold(valid_dir, thresholds)
 
             candidates = result >= thr;
             real = imread(strcat(valid_dir, '/mask/mask.', name, '.png')) > 0;
-            
-            [localPixelTP, localPixelFP, localPixelFN, localPixelTN] = PerformanceAccumulationPixel(candidates, real);
-            
+
+            [localPixelTP, localPixelFP, localPixelFN, localPixelTN] ...
+                = PerformanceAccumulationPixel(candidates, real);
+
             pixelTP = pixelTP + localPixelTP;
             pixelFP = pixelFP + localPixelFP;
             pixelFN = pixelFN + localPixelFN;
             pixelTN = pixelTN + localPixelTN;
-            
+
             fprintf('(%d, %d) %s\n', i, j, files(j).name);
         end
-        
+
         summary(i,:) = [pixelTP, pixelFP, pixelFN, pixelTN];
     end
 
 end
-

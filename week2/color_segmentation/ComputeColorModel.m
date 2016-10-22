@@ -1,45 +1,37 @@
 function [prob_chr, prob_lum] = ComputeColorModel(histo_chr, histo_lum, class)
-    % ComputeColorModels
-    % The function compute 3 color models by grouping the signals according
-    % to the following criteria:
-    % - 'red_white_black': signal types A, B and C. 
-    % - 'blue_white_black': signal types D and F.
-    % - 'red_blue': signal type E.
-    %
-    % The color model of a signal is its color probability distribution,
-    % splited into Hue-Saturation probability and Lightness probability.
-    %
-    %   function [prob_chr, prob_lum, labels] = ComputeColorModels(histo_chr, histo_lum, class)
-    %
-    %    Parameter name      Value
-    %    --------------      -----
-    %    histo_chr           The Hue-Saturation histogram matrix returned
-    %                        by the ExtractHistograms() function. (Size
-    %                        19x10xN)
-    %    histo_lum           The Lightness histogram matrix returned by the
-    %                        ExtractHistograms() function. (Size Nx10)
-    %    class               The column vector of size N, with the class
-    %                        label of each signal, returned by the
-    %                        ExtractHistograms() function.
-    %                        
-    % The 'prob_chr' matrix has dimension 6x19x10. The first axis ranges
-    % over the signal classes ('A', 'B', ..., 'F'). The second and third
-    % axes range over the Hue and Saturation values. These values are
-    % quantizing and shifted to the ranges [1:19] and [1:10] respectively.
-    % For example, if prob_chr(1,2,4) == 0.03, then given a pixel from a
-    % signal of type 'A', has a probability of 0.03 to have a (quantized)
-    % hue == 2 and a (quantized) saturation == 4.
-    %
-    % The 'prob_lum' matrix has dimension 6x10 and represent the respective
-    % probabilities for the (quantized) Lightness channel.
-    %
-    %
-    % 'red_white_black', 'blue_white_black', 'red_blue'.
-    
+% ComputeColorModels
+% Compute a color model for the traffic signals taking their
+% histograms as input. The color model will be composed of two
+% probability distributions for each of the following signal groups:
+% - red-white-black signals (types A, B and C).
+% - blue-white-black signals (types D and F).
+% - red_blue signals (type E).
+%
+%   function [prob_chr, prob_lum, labels] = ComputeColorModels(histo_chr, histo_lum, class)
+%
+%    Parameter name      Value
+%    --------------      -----
+%    histo_chr           Hue-Saturation histograms stacked as a 3D array
+%                        (Size [hue_bins, sat_bins, N])
+%    histo_lum           Luminance histograms stacked as a 2D array
+%                        (Size [N, lum_bins])
+%    class               The column vector of size N, with the class
+%                        label of each signal.
+%
+% NOTE: use ExtractHistograms() to obtain all these input parameters.
+%
+% The Hue-Saturation joint probability distributio is computed by adding all
+% the Hue-Saturation histograms for a given group and then
+% normalizing the result. The probability for each group is stacked
+% into the 'prob_chr' output array with size [hue_bins, sat_bins, 3].
+%
+% Similarly for the Luminance probability distribution, its results
+% are stacked into the 'prob_lum' output array with size [lum_bins, 3].
+
     filters = {'ABC', 'DF', 'E'};  % classes: 'red_white_black', 'blue_white_black', 'red_blue'
     prob_chr = zeros(size(histo_chr, 1), size(histo_chr, 2), 3);
     prob_lum = zeros(size(histo_lum, 2), 3);
-    
+
     for i = 1:size(filters, 2)
         % create mask to filter by group
         mask = zeros(size(class));
@@ -47,9 +39,9 @@ function [prob_chr, prob_lum] = ComputeColorModel(histo_chr, histo_lum, class)
         for j = 1:size(filter, 2)
             mask = mask | class == filter(j);
         end
-        
+
         % compute color probability distribution
-        n = sum(sum(histo_lum(mask, :), 1));  
+        n = sum(sum(histo_lum(mask, :), 1));
         prob_chr(:,:,i) = sum(histo_chr(:,:,mask), 3) / n;
         prob_lum(:,i) = sum(histo_lum(mask,:), 1) / n;
     end
