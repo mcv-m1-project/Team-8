@@ -21,31 +21,22 @@ function [proj] = BackProjection(im, model, color_conversion)
     if (nargin == 3) & color_conversion
         im = colorspace('RGB->HSL', double(im) / 255);
     end
-
+    
     % Split channels
     h = im(:,:,1);
     s = im(:,:,2);
     l = im(:,:,3);
 
-    % Quantization
-    [hue_bins, sat_bins] = size(model);
-    hue_bin_size = 360 / hue_bins;
-    sat_bin_size = 1 / sat_bins;
-    
-    h = uint16(ceil(h / hue_bin_size));
-    s = uint16(ceil(s / sat_bin_size));
-    
-    h(h >= hue_bins+1) = hue_bins;  % ensure range 1:num bins
-    s(s >= sat_bins+1) = sat_bins;
-    
-    h(h == 0) = 1;  % ensure range 1:num bins
-    s(s == 0) = 1;
+    % Quantization and shift
+    h = floor(h / 20) + 1;        % range 1:19
+    s = floor(s * 9) + 1;         % range 1:10
 
     % Backprojection
     h = reshape(h, [size(im,1) * size(im,2), 1]);
     s = reshape(s, [size(im,1) * size(im,2), 1]);
     
-    idx = (s - 1) * hue_bins + h;
+    n_rows = 19;
+    idx = (s - 1) * n_rows + h;
     proj = reshape(model(idx), size(im, 1), size(im, 2));
 end
 

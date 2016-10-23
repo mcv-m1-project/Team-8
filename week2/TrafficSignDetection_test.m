@@ -1,4 +1,5 @@
-function TrafficSignDetection_test(input_dir, output_dir, model, threshold)
+function TrafficSignDetection_test(input_dir, output_dir, model, ...
+                                   backproj_thr, saturation_thr)
     % TrafficSignDetection
     % Perform detection of Traffic signs on images. Detection is performed first at the pixel level
     % using a color segmentation. Then, using the color segmentation as a basis, the most likely window 
@@ -9,10 +10,12 @@ function TrafficSignDetection_test(input_dir, output_dir, model, threshold)
     %    --------------      -----
     %    'input_dir'         Directory where the test images to analize  (.jpg) reside
     %    'output_dir'        Directory where the results are stored
-    %    'model_file'        Mat file containing the chroma mask to use in
-    %                        color segmentation. It must contain a matrix
-    %                        with name 'chroma_mask' with the result of
-    %                        the CreateColorMask() function.
+    %    'model'             Array with the chroma model to use in
+    %                        color segmentation.
+    %    'backproj_thr'      Threshold for the color model, that is
+    %                        based on histogram backprojection.
+    %    'saturation_thr'    Aditional threshold applied to the
+    %                        image to discard low saturated pixel values.
 
     % Flatten the model by getting the maximum probability of each layer
     model = max(model, [], 3);
@@ -30,8 +33,8 @@ function TrafficSignDetection_test(input_dir, output_dir, model, threshold)
         % Candidate Generation (pixel) %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         im = colorspace('RGB->HSL', double(im) / 255);
         
-        pixelCandidates = BackProjection(im, model) >= threshold;
-        pixelCandidates = pixelCandidates & (im(:,:,2) > 0.3);
+        pixelCandidates = BackProjection(im, model) >= backproj_thr;
+        pixelCandidates = pixelCandidates & (im(:,:,2) >= saturation_thr);
         
         pixelCandidates = imfill(pixelCandidates,'holes');
         pixelCandidates = imopen(pixelCandidates, strel('disk', 24));
@@ -39,6 +42,6 @@ function TrafficSignDetection_test(input_dir, output_dir, model, threshold)
         
         out_file1 = sprintf ('%s/pixelCandidates_%06d.png',  output_dir, ii);
 	    
-	    imwrite (pixelCandidates, out_file1);
+        imwrite (pixelCandidates, out_file1);
     end
 end

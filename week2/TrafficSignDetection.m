@@ -1,17 +1,9 @@
-function TrafficSignDetection(directory, model, threshold)
+function TrafficSignDetection(directory, model, backproj_thr, saturation_thr)
     % TrafficSignDetection
     % Perform detection of Traffic signs on images. Detection is performed first at the pixel level
     % using a color segmentation. Then, using the color segmentation as a basis, the most likely window 
     % candidates to contain a traffic sign are selected using basic features (form factor, filling factor). 
     % Finally, a decision is taken on these windows using geometric heuristics (Hough) or template matching.
-    %
-    %    Parameter name      Value
-    %    --------------      -----
-    %    'directory'         directory where the test images to analize  (.jpg) reside
-    %    'model_file'        Mat file containing the chroma mask to use in
-    %                        color segmentation. It must contain a matrix
-    %                        with name 'chroma_mask' with the result of
-    %                        the CreateColorMask() function.
 
     % Flatten the model by getting the maximum probability of each layer
     model = max(model, [], 3);
@@ -31,15 +23,13 @@ function TrafficSignDetection(directory, model, threshold)
         % Candidate Generation (pixel) %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         im = colorspace('RGB->HSL', double(im) / 255);
         
-        pixelCandidates = BackProjection(im, model) >= threshold;
-        pixelCandidates = pixelCandidates & (im(:,:,2) > 0.3);
+        pixelCandidates = BackProjection(im, model) >= backproj_thr;
+        pixelCandidates = pixelCandidates & (im(:,:,2) >= ...
+                                             saturation_thr);
         
         pixelCandidates = imfill(pixelCandidates,'holes');
-        pixelCandidates = imopen(pixelCandidates, strel('disk', 24));
-        pixelCandidates = imdilate(pixelCandidates, strel('disk',4));
-                
-        % Candidate Generation (window)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % windowCandidates = CandidateGenerationWindow_Example(im, pixelCandidates, window_method); %%'SegmentationCCL' or 'SlidingWindow'  (Needed after Week 3)
+        pixelCandidates = imopen(pixelCandidates, strel('disk', 24));     
+        pixelCandidates = imdilate(pixelCandidates, strel('disk', 4));
         
         % Accumulate pixel performance of the current image %%%%%%%%%%%%%%%%%
         pixelAnnotation = imread(strcat(directory, '/mask/mask.', files(i).name(1:size(files(i).name,2)-3), 'png'))>0;
@@ -56,8 +46,6 @@ function TrafficSignDetection(directory, model, threshold)
     
     [pixelPrecision, pixelAccuracy, pixelSpecificity, pixelSensitivity]
     
-    %profile report
-    %profile off
     toc
 end
  

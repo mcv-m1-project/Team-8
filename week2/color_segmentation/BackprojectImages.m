@@ -1,7 +1,7 @@
-function [] = BackprojectImages(input_dir, output_dir, model)
+function [] = BackprojectImages(input_dir, model)
 % BackprojectImages
 % Take the images in input_dir and backproject them a color model.
-% The resulting images are saved in output_dir as *.mat files.
+% The resulting images are saved in <input_dir>/backproj as *.mat files.
 %
 % Each pixel in the resulting images is the corresponding
 % probability according to the color model.
@@ -19,6 +19,7 @@ function [] = BackprojectImages(input_dir, output_dir, model)
 % color model. The color model is the first parameter returned by
 % ComputeColorModel().
 
+    output_dir = strcat(input_dir, '/backproj');
     if exist(output_dir, 'dir') == 0
         mkdir(output_dir)
     end
@@ -32,7 +33,7 @@ function [] = BackprojectImages(input_dir, output_dir, model)
         jpg = strcat(input_dir, '/', files(i).name);
         im = imread(jpg);
 
-        result = BackProjection(im, model);
+        result = BackProjection(im, model, 1);
 
         outfile = sprintf('%s/%s.mat', output_dir, files(i).name(1:9));
         save(outfile, 'result');

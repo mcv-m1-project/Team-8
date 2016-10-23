@@ -1,5 +1,4 @@
-function [histo_chr, histo_lum, class] = ExtractHistograms(dir, ...
-                                                      hue_bins, sat_bins, lum_bins)
+function [histo_chr, histo_lum, class] = ExtractHistograms(dir)
 % ExtractHistograms
 % Compute histograms in the HSL colorspace for each signal found
 % in the directory. The histograms are uniformly quantized into
@@ -12,20 +11,17 @@ function [histo_chr, histo_lum, class] = ExtractHistograms(dir, ...
 %    --------------      -----
 %    dir                 Directory with the jpg files and with
 %                        subdirs gt/ and mask/.
-%    hue_bins            Number of bins in the hue axis.
-%    sat_bins            Number of bins in the saturation axis.
-%    lum_bins            Number of bins in the luminance axis.
 %
 % For each signal the function returns a 2D joint histogram for hue
 % (y-axis) and saturation (x-axis), and a 1D histogram for
 % the luminance.
 %
 % The 2D histograms are stacked into the output variable
-% 'histo_chr'. This array will have a size [hue_bins, sat_bins,
-% N], where N is the number of signals found in 'dir'.
+% 'histo_chr'. This array will have a size [19, 10, N], 
+% where N is the number of signals found in 'dir'.
 %
 % Similarly, the 1D histograms are stacked into 'histo_lum',
-% with size [N, lum_bins].
+% with size [N, 10].
 %
 % The class label of each signal is stored in the 'class'
 % column vector of size [N, 1].
@@ -33,10 +29,6 @@ function [histo_chr, histo_lum, class] = ExtractHistograms(dir, ...
     histo_chr = [];
     histo_lum = [];
     class = '';
-
-    hue_bin_size = 360 / hue_bins;
-    sat_bin_size = 1 / sat_bins;
-    lum_bin_size = 1 / lum_bins;
 
     files = ListFiles(dir);
 
@@ -78,23 +70,22 @@ function [histo_chr, histo_lum, class] = ExtractHistograms(dir, ...
             s = s(find(mask));
             l = crop(:,:,3);
             l = l(find(mask));
-
-            % Quantization
-            h = uint16(ceil(h / hue_bin_size));
-            s = uint16(ceil(s / sat_bin_size));
-            l = uint16(ceil(l / lum_bin_size));
-
-            h(h >= hue_bins+1) = hue_bins;  % ensure range 1:num bins
-            s(s >= sat_bins+1) = sat_bins;
-            l(l >= lum_bins+1) = lum_bins;
-
-            h(h == 0) = 1;  % ensure range 1:num bins
-            s(s == 0) = 1;
-            l(l == 0) = 1;
-
-            % Build signal histograms
-            chr = accumarray([h, s], 1, [hue_bins, sat_bins]);
-            lum = accumarray(l, 1, [lum_bins, 1]);
+            
+            % Extract channels and filter out background pixels
+            h = crop(:,:,1);
+            h = h(find(mask));
+            s = crop(:,:,2);
+            s = s(find(mask));
+            l = crop(:,:,3);
+            l = l(find(mask));
+            
+            % Quantization and shift
+            h = floor(h / 20) + 1;        % range 1:19
+            s = floor(s * 9) + 1;         % range 1:10
+            l = floor(l * 9) + 1;         % range 1:10
+            
+            chr = accumarray([h, s], 1, [19, 10]);
+            lum = accumarray(l, 1, [10, 1]);
 
             % Stack histograms and class label
             histo_chr = cat(3, histo_chr, chr);

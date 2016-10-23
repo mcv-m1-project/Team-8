@@ -1,16 +1,20 @@
-function [summary] = FitColorModelThreshold(valid_dir, thresholds)
-% FitColorModelThreshold
+function [summary] = EvaluateColorModelThresholds(valid_dir, thresholds)
+% EvaluateColorModelThresholds
 % Given a folder with backprojected images, this function apply
 % several thresholds to them and compare the results with the ground
 % thruth. The final result will be a confusion matrix for each threshold
 % applied.
 %
-%   function [summary] = FitColorModelThreshold(valid_dir, thresholds)
+%   function [summary] = EvaluateColorModelThresholds(valid_dir, thresholds)
 %
 %    Parameter name      Value
 %    --------------      -----
-%    valid_dir           Directory with the backprojected images.
+%    valid_dir           Directory with the validation
+%                        dataset. It must contain the original
+%                        images, their masks, and their backprojections.
 %    thresholds          Vector with N thresholds to be tested.
+%
+% NOTE: use BackprojectImages() to create the valid_dir directory.
 %
 % The N confusion matrix are stacked into 'summary', with columns
 % [TP, FP, FN, TN].
