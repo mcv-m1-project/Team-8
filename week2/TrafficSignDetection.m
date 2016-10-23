@@ -1,67 +1,35 @@
-function TrafficSignDetection(directory, model_file)
+function TrafficSignDetection(directory, model, backproj_thr, saturation_thr)
     % TrafficSignDetection
     % Perform detection of Traffic signs on images. Detection is performed first at the pixel level
     % using a color segmentation. Then, using the color segmentation as a basis, the most likely window 
     % candidates to contain a traffic sign are selected using basic features (form factor, filling factor). 
     % Finally, a decision is taken on these windows using geometric heuristics (Hough) or template matching.
-    %
-    %    Parameter name      Value
-    %    --------------      -----
-    %    'directory'         directory where the test images to analize  (.jpg) reside
-    %    'model_file'        Mat file containing the chroma mask to use in
-    %                        color segmentation. It must contain a matrix
-    %                        with name 'chroma_mask' with the result of
-    %                        the CreateColorMask() function.
 
-    global CANONICAL_W;        CANONICAL_W = 64;
-    global CANONICAL_H;        CANONICAL_H = 64;
-    global SW_STRIDEX;         SW_STRIDEX = 8;
-    global SW_STRIDEY;         SW_STRIDEY = 8;
-    global SW_CANONICALW;      SW_CANONICALW = 32;
-    global SW_ASPECTRATIO;     SW_ASPECTRATIO = 1;
-    global SW_MINS;            SW_MINS = 1;
-    global SW_MAXS;            SW_MAXS = 2.5;
-    global SW_STRIDES;         SW_STRIDES = 1.2;
-
-    % Extract chroma model from given mask
-    load(model_file, 'chroma_mask');
-    [chroma_model_a, chroma_model_b] = find(chroma_mask);
-    chroma_model = [chroma_model_a.'; chroma_model_b.'].';
-
-    % Load models
-    %global circleTemplate;
-    %global givewayTemplate;   
-    %global stopTemplate;      
-    %global rectangleTemplate; 
-    %global triangleTemplate;  
-    %
-    %if strcmp(decision_method, 'TemplateMatching')
-    %   circleTemplate    = load('TemplateCircles.mat');
-    %   givewayTemplate   = load('TemplateGiveways.mat');
-    %   stopTemplate      = load('TemplateStops.mat');
-    %   rectangleTemplate = load('TemplateRectangles.mat');
-    %   triangleTemplate  = load('TemplateTriangles.mat');
-    %end
-
-    % windowTP=0; windowFN=0; windowFP=0; % (Needed after Week 3)
-    pixelTP=0; pixelFN=0; pixelFP=0; pixelTN=0;
+    % Flatten the model by getting the maximum probability of each layer
+    model = max(model, [], 3);
     
+    pixelTP=0; pixelFN=0; pixelFP=0; pixelTN=0;
     files = ListFiles(directory);
+    
+    tic
     
     for i=1:size(files,1),
         
-        fprintf('%s\n', files(i).name);
+        fprintf('%04d: %s\n', i, files(i).name);
 
         % Read file
         im = imread(strcat(directory,'/',files(i).name));
-     
+        
         % Candidate Generation (pixel) %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        %pixelCandidates = CandidateGenerationPixel_Color(im, pixel_method);
-        pixelCandidates = ColorSegmentation(im, chroma_model);
+        im = colorspace('RGB->HSL', double(im) / 255);
         
+        pixelCandidates = BackProjection(im, model) >= backproj_thr;
+        pixelCandidates = pixelCandidates & (im(:,:,2) >= ...
+                                             saturation_thr);
         
-        % Candidate Generation (window)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % windowCandidates = CandidateGenerationWindow_Example(im, pixelCandidates, window_method); %%'SegmentationCCL' or 'SlidingWindow'  (Needed after Week 3)
+        pixelCandidates = imfill(pixelCandidates,'holes');
+        pixelCandidates = imopen(pixelCandidates, strel('disk', 24));     
+        pixelCandidates = imdilate(pixelCandidates, strel('disk', 4));
         
         % Accumulate pixel performance of the current image %%%%%%%%%%%%%%%%%
         pixelAnnotation = imread(strcat(directory, '/mask/mask.', files(i).name(1:size(files(i).name,2)-3), 'png'))>0;
@@ -69,55 +37,22 @@ function TrafficSignDetection(directory, model_file)
         pixelTP = pixelTP + localPixelTP;
         pixelFP = pixelFP + localPixelFP;
         pixelFN = pixelFN + localPixelFN;
-        pixelTN = pixelTN + localPixelTN;
-        
-        % Accumulate object performance of the current image %%%%%%%%%%%%%%%%  (Needed after Week 3)
-        % windowAnnotations = LoadAnnotations(strcat(directory, '/gt/gt.', files(i).name(1:size(files(i).name,2)-3), 'txt'));
-        % [localWindowTP, localWindowFN, localWindowFP] = PerformanceAccumulationWindow(windowCandidates, windowAnnotations);
-        % windowTP = windowTP + localWindowTP;
-        % windowFN = windowFN + localWindowFN;
-        % windowFP = windowFP + localWindowFP;
+        pixelTN = pixelTN + localPixelTN;        
     end
 
     % Plot performance evaluation
     [pixelPrecision, pixelAccuracy, pixelSpecificity, pixelSensitivity] = PerformanceEvaluationPixel(pixelTP, pixelFP, pixelFN, pixelTN);
-    % [windowPrecision, windowAccuracy] = PerformanceEvaluationWindow(windowTP, windowFN, windowFP); % (Needed after Week 3)
+    
     
     [pixelPrecision, pixelAccuracy, pixelSpecificity, pixelSensitivity]
-    % [windowPrecision, windowAccuracy]
     
-    %profile report
-    %profile off
     toc
 end
  
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% CandidateGeneration
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function [pixelCandidates] = CandidateGenerationPixel_Color(im, space)
-
-    im=double(im);
-
-    switch space
-        case 'normrgb'
-            pixelCandidates = im(:,:,1)>100;
-            
-        otherwise
-            error('Incorrect color space defined');
-            return
-    end
-end    
-    
-
-function [windowCandidates] = CandidateGenerationWindow_Example(im, pixelCandidates, window_method)
-    windowCandidates = [ struct('x',double(12),'y',double(17),'w',double(32),'h',double(32)) ];
-end  
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
