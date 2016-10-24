@@ -1,5 +1,5 @@
 addpath(genpath('.'))
-%rocaccumulation_dil = TrafficSignFiltering('./dataset/validation/test', './dataset/validation');
+rocaccumulation_dil = TrafficSignFiltering('./dataset/validation/test', './dataset/validation');
 figure;
 plot (rocaccumulation(:,1), rocaccumulation(:,2),'r');
 hold;

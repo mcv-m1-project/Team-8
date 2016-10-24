@@ -47,7 +47,7 @@ function rocaccumulation = TrafficSignFiltering(directory, mask_directory)
     
     %Iterations represents de variable size of the structuring element to perfrom
     %the ROC curve 
-    iterations = 30;
+    iterations = 20;
     files = ListFiles(directory);
     rocaccumulation = zeros(iterations,2);
     mask_files = ListFiles(mask_directory);
@@ -57,19 +57,20 @@ for k=1:iterations,
     for i=1:size(files,1),
      %for i=1:10,   
         %fprintf('%s\n', files(i).name);
-
+       
         % Read file
         pixelCandidates_1 = imread(strcat(directory,'/',files(i).name));
      
         % Candidate Generation (pixel) %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+        pixelCandidates_1 = imclose(pixelCandidates_1,strel('disk',1));
+        
         tridiskmin = strel('disk',k);
         
         pixelCandidates_1 = imfill(pixelCandidates_1,'holes');
 
-        pixelCandidates_tri = imopen(pixelCandidates_1,tridiskmin);
+        pixelCandidates = imopen(pixelCandidates_1,tridiskmin);
   
-        pixelCandidates = imdilate(pixelCandidates_tri,strel('disk',4));
+        %pixelCandidates = imdilate(pixelCandidates_tri,strel('disk',4));
         
         %pixelCandidates = pixelCandidates_tri;
         %pixelCandidates = imopen(pixelCandidates_1,sedisk);
