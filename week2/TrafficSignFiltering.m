@@ -43,68 +43,82 @@ function rocaccumulation = TrafficSignFiltering(directory, mask_directory)
     %   triangleTemplate  = load('TemplateTriangles.mat');
     %end
 
-    % windowTP=0; windowFN=0; windowFP=0; % (Needed after Week 3)
+    windowTP=0; windowFN=0; windowFP=0; % (Needed after Week 3)
     
     %Iterations represents de variable size of the structuring element to perfrom
     %the ROC curve 
-    iterations = 20;
+    %iterations = 20;
     files = ListFiles(directory);
-    rocaccumulation = zeros(iterations,2);
+    rocaccumulation = zeros(2);
     mask_files = ListFiles(mask_directory);
     
-for k=1:iterations,
+%for k=1:iterations,
     pixelTP=0; pixelFN=0; pixelFP=0; pixelTN=0;
-    for i=1:size(files,1),
-     %for i=1:10,   
+    %for i=1:size(files,1),
+     for i=1:10,   
         %fprintf('%s\n', files(i).name);
        
         % Read file
-        pixelCandidates_1 = imread(strcat(directory,'/',files(i).name));
+        im = imread(strcat(mask_directory,'/',mask_files(i).name));
+        pixelCandidates = imread(strcat(directory,'/',files(i).name));
      
         % Candidate Generation (pixel) %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        pixelCandidates_1 = imclose(pixelCandidates_1,strel('disk',1));
+        %pixelCandidates_1 = imclose(pixelCandidates_1,strel('disk',1));
         
-        tridiskmin = strel('disk',k);
-        
-        pixelCandidates_1 = imfill(pixelCandidates_1,'holes');
 
-        pixelCandidates = imopen(pixelCandidates_1,tridiskmin);
-  
-        %pixelCandidates = imdilate(pixelCandidates_tri,strel('disk',4));
         
-        %pixelCandidates = pixelCandidates_tri;
-        %pixelCandidates = imopen(pixelCandidates_1,sedisk);
+        pixelCandidates = imfill(pixelCandidates,'holes');
+        pixelCandidates = imopen(pixelCandidates,strel('disk',7));
+  
+        pixelCandidates = imdilate(pixelCandidates,strel('disk',4));
+        imshow(pixelCandidates);
+        %x1 = round(window(j).x);
+        %y1 = round(window(j).y);
+        %x2 = round(window(j).x + window(j).w);
+        %y2 = round(window(j).y + window(j).h);
+        %mask = pixelCandidates(y1:y2, x1:x2);
+        disp(size(pixelCandidates));
+        pixelCandidates = pixelCandidates(113:192,1397:1488);
+        
+        %filling_ratio = sum(mask(:)) / numel(mask);
+        filling_ratio = sum(pixelCandidates(:)) / numel(pixelCandidates);
+        %form_factor = window(j).w / window(j).h;
+        
+        disp(filling_ratio);
+        
+        %if(filling_ratio > 0.1138)
+            
+        
+        figure;
+        imshow(pixelCandidates);
+        window_method = 'SlidingWindow';
         % Candidate Generation (window)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % windowCandidates = CandidateGenerationWindow_Example(im, pixelCandidates, window_method); %%'SegmentationCCL' or 'SlidingWindow'  (Needed after Week 3)        
+         windowCandidates = CandidateGenerationWindow_Example(im, pixelCandidates, window_method); %%'SegmentationCCL' or 'SlidingWindow'  (Needed after Week 3)        
         % Accumulate pixel performance of the current image %%%%%%%%%%%%%%%%%
-        pixelAnnotation = imread(strcat(mask_directory, '/mask/mask.', mask_files(i).name(1:size(mask_files(i).name,2)-3), 'png'))>0;
-        [localPixelTP, localPixelFP, localPixelFN, localPixelTN] = PerformanceAccumulationPixel(pixelCandidates, pixelAnnotation);
-        pixelTP = pixelTP + localPixelTP;
-        pixelFP = pixelFP + localPixelFP;
-        pixelFN = pixelFN + localPixelFN;
-        pixelTN = pixelTN + localPixelTN;
+        %pixelAnnotation = imread(strcat(mask_directory, '/mask/mask.', mask_files(i).name(1:size(mask_files(i).name,2)-3), 'png'))>0;
+        %[localPixelTP, localPixelFP, localPixelFN, localPixelTN] = PerformanceAccumulationPixel(pixelCandidates, pixelAnnotation);
+        %pixelTP = pixelTP + localPixelTP;
+        %pixelFP = pixelFP + localPixelFP;
+        %pixelFN = pixelFN + localPixelFN;
+        %pixelTN = pixelTN + localPixelTN;
         
         % Accumulate object performance of the current image %%%%%%%%%%%%%%%%  (Needed after Week 3)
-        % windowAnnotations = LoadAnnotations(strcat(directory, '/gt/gt.', files(i).name(1:size(files(i).name,2)-3), 'txt'));
-        % [localWindowTP, localWindowFN, localWindowFP] = PerformanceAccumulationWindow(windowCandidates, windowAnnotations);
-        % windowTP = windowTP + localWindowTP;
-        % windowFN = windowFN + localWindowFN;
-        % windowFP = windowFP + localWindowFP;
+         windowAnnotations = LoadAnnotations(strcat(mask_directory, '/gt/gt.', mask_files(i).name(1:size(mask_files(i).name,2)-3), 'txt'));
+         [localWindowTP, localWindowFN, localWindowFP] = PerformanceAccumulationWindow(windowCandidates, windowAnnotations);
+         windowTP = windowTP + localWindowTP;
+         windowFN = windowFN + localWindowFN;
+         windowFP = windowFP + localWindowFP;
     end
 
     % Plot performance evaluation
-    [pixelPrecision, pixelAccuracy, pixelSpecificity, pixelSensitivity] = PerformanceEvaluationPixel(pixelTP, pixelFP, pixelFN, pixelTN);
-    % [windowPrecision, windowAccuracy] = PerformanceEvaluationWindow(windowTP, windowFN, windowFP); % (Needed after Week 3)
+    %[pixelPrecision, pixelAccuracy, pixelSpecificity, pixelSensitivity] = PerformanceEvaluationPixel(pixelTP, pixelFP, pixelFN, pixelTN);
+    [windowPrecision, windowAccuracy] = PerformanceEvaluationWindow(windowTP, windowFN, windowFP); % (Needed after Week 3)
     
     [pixelPrecision, pixelAccuracy, pixelSpecificity, pixelSensitivity]
-    rocaccumulation(k,1) = pixelPrecision;
-    rocaccumulation(k,2) = pixelSensitivity;
+    rocaccumulation(1) = pixelPrecision;
+    rocaccumulation(2) = pixelSensitivity;
     
-    % [windowPrecision, windowSensitivity]
-end
-
-
-rocaccumulation
+    % [windowPrecision, windowSensitivity
     %profile report
     %profile off
     %toc
