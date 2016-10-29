@@ -2,7 +2,8 @@ function [TP, FP, FN] = ConnectedComponentDetection(valid_dir, ...
                                                     form_factor_min, ...
                                                     form_factor_max, ...
                                                     filling_ratio_min, ...
-                                                    filling_ratio_max)
+                                                    filling_ratio_max, ...
+                                                    result_subdir)
 % ConnectedComponentDetection
 %
 % Test the connected component approach with the given thresholds.
@@ -31,6 +32,12 @@ function [TP, FP, FN] = ConnectedComponentDetection(valid_dir, ...
     if size(input_files, 1) ~= size(im_files, 1)
         error(['valid_dir: gt/ and pixeldet/ subdirs does not match']);
     end
+    
+    if exist('result_subdir', 'var')
+        mkdir([valid_dir, '/', result_subdir]);
+    else
+        result_subdir = '';
+    end
 
     TP = 0;
     FP = 0;
@@ -52,6 +59,13 @@ function [TP, FP, FN] = ConnectedComponentDetection(valid_dir, ...
         TP = TP + localTP;
         FP = FP + localFP;
         FN = FN + localFN;
+       
+        if ~isempty(result_subdir)
+            imresult = DrawBoundingBoxes(im, bb, annotations);
+            imwrite(imresult, ...
+                    [valid_dir, '/', result_subdir, '/', ...
+                     input_files(i).name]);
+        end
     end
    
     fprintf('\n');

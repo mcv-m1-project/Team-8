@@ -40,15 +40,15 @@ if exist(pixelcand_dir) ~= 7
 end
 
 % Evaluate all the combinations for the threshold values 
-[combs, F1score, fig] = EvaluateConnCompThresholds(valid_dir, ...
+[combs, F1score, confmat, fig] = EvaluateConnCompThresholds(valid_dir, ...
                                                   form_factor_min_trials, ...
                                                   form_factor_max_trials, ...
                                                   filling_ratio_min_trials, ...
                                                   filling_ratio_max_trials);
 
 % Print F1-score for each threshold combination
-fprintf('Summary of trials and their F1-score:\n');
-disp(horzcat(combs, F1score));
+fprintf('Summary of trials and their F1-score, TP, FP, FN:\n');
+disp(horzcat(combs, F1score, confmat));
 
 % Find the best combination based on F1-score
 [best, idx] = max(F1score);

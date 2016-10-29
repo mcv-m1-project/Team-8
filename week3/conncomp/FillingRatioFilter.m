@@ -5,9 +5,9 @@ function [newbboxarray] = FillingRatioFilter(im, bboxarray, min, max)
 % Filling ratio = object pixels / bounding box pixels.
 
     newbboxarray = [];
-    for i=1:size(bboxarray, 2)
+    for i=1:size(bboxarray, 1)
         box = bboxarray(i);
-        crop = im(box.y:box.y+box.h-1, box.x:box.x+box.w);
+        crop = im(box.y:box.y+box.h-1, box.x:box.x+box.w-1);
         filrat = sum(sum(crop)) / (box.w * box.h);
         if (filrat >= min) & (filrat <= max)
             newbboxarray = [newbboxarray; bboxarray(i)];

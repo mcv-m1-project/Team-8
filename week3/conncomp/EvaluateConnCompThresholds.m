@@ -1,4 +1,4 @@
-function [combinations, F1score, fig] = EvaluateConnCompThresholds ...
+function [combinations, F1score, confmat, fig] = EvaluateConnCompThresholds ...
         (valid_dir, ...
          form_factor_min, ...
          form_factor_max, ...
@@ -26,8 +26,9 @@ function [combinations, F1score, fig] = EvaluateConnCompThresholds ...
 %
 % The function resturns a matrix 'combinations' with size Nx4 with
 % all the combinations for the given threshold values. It also
-% returns their F1-scores in a Nx1 column vector and the figure
-% with the Precision-Recall curve.
+% returns their F1-scores in a Nx1 column vector and their
+% values for TP, FP, FN in a Nx3 matrix. The last object returned
+% is a figure with the Precision-Recall curve.
 
     max_i = size(form_factor_min, 2);
     max_j = size(form_factor_max, 2);
@@ -67,7 +68,8 @@ function [combinations, F1score, fig] = EvaluateConnCompThresholds ...
     end
     
     F1score = 2 * TP ./ (2 * TP + FP + FN);
-
+    confmat = horzcat(TP, FP, FN);
+    
     labels = cellfun(@num2str,num2cell(1:size(TP,1)), ...
                      'uniformoutput', 0);
     fig = ShowPrecisionRecallCurve(labels, TP, FP, FN);
