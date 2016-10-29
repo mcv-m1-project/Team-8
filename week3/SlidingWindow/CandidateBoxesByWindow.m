@@ -28,19 +28,20 @@ for i=1:length(factors)
     CurImg(CurbBoxes(k,1):CurbBoxes(k,2),CurbBoxes(k,3):CurbBoxes(k,4))=0;
   end
   %CurbBoxes
-  figure;imshow(CurImg);
-  size(CurImg)
-  CurbBoxes
+  %figure;imshow(CurImg);
+  %size(CurImg)
+  %CurbBoxes
   if size(CurbBoxes,1)~=0
     CurbBoxes(:,1:2)=CurbBoxes(:,1:2)/size(CurImg,1);
     CurbBoxes(:,3:4)=CurbBoxes(:,3:4)/size(CurImg,2);
   end
-  bBoxes=[bBoxes;CurbBoxes]
+  bBoxes=[bBoxes;CurbBoxes];
   if i<length(factors)
     %size(CurImg)
     CurImg=imresize(CurImg,(factors(i+1)/factors(i)));
   end
 end
-
-bBoxes(:,1:2) = round(bBoxes(:,1:2)*size(Imag,1));
-bBoxes(:,3:4) = round(bBoxes(:,3:4)*size(Imag,2));
+if size(bBoxes,1)~=0
+    bBoxes(:,1:2) = round(bBoxes(:,1:2)*size(Imag,1));
+    bBoxes(:,3:4) = round(bBoxes(:,3:4)*size(Imag,2));
+end
