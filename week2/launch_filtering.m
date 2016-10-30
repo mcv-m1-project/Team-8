@@ -1,4 +1,5 @@
 addpath(genpath('.'))
+<<<<<<< HEAD
 
 valid_dir = '/home/ihcv08/dataset/trial3/validation';
 test_radius = 22:24;
@@ -14,6 +15,9 @@ rocaccumulation = TrafficSignFiltering(valid_dir, color_model, 0.022, ...
                                        0.3, test_radius);
 
 % Plot results
+=======
+rocaccumulation_dil = TrafficSignFiltering('./dataset/validation/test', './dataset/validation');
+>>>>>>> block3-task2-intra
 figure;
 % plot (rocaccumulation(:,1), rocaccumulation(:,2),'r');
 % hold;
