@@ -33,9 +33,9 @@ function ConnectedComponentDetection_test(input_dir, ...
     backproj_thr = 0.022;
     saturation_thr = 0.3;
     
-    mkdir(output_dir);
     files = ListFiles(input_dir);
     
+    tic
     for i=1:size(files,1),
 
         fprintf('%s\n', files(i).name);
@@ -70,4 +70,8 @@ function ConnectedComponentDetection_test(input_dir, ...
         window_file = sprintf('%s/%s.mat', output_dir, files(i).name(1:end-4));
         save(window_file, 'windowCandidates');
     end
+    
+    toc
+    fprintf('\n');
+    fprintf('time/frame (ms): %f\n', toc/size(files, 1));
 end

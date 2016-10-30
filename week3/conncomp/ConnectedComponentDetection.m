@@ -42,6 +42,7 @@ function [TP, FP, FN] = ConnectedComponentDetection(valid_dir, ...
     TP = 0;
     FP = 0;
     FN = 0;
+    tic
     for i=1:size(im_files, 1)
         fprintf('.');
         
@@ -67,6 +68,8 @@ function [TP, FP, FN] = ConnectedComponentDetection(valid_dir, ...
                      input_files(i).name]);
         end
     end
-   
+    
+    toc
     fprintf('\n');
+    fprintf('time/frame (ms): %f\n', toc/size(im_files, 1));
 end
