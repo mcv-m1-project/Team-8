@@ -23,7 +23,10 @@ factors=fliplr(factors);
 bBoxes = [];
 
 for i=1:length(factors)
-  CurbBoxes=slideWindow(CurImg,WindowSize,step,fr_threshold);
+  %figure;imshow(255*CurImg)
+  %CurbBoxes=slideWindow(CurImg,WindowSize,step,fr_threshold);
+  CurbBoxes=slideWindowByConv(CurImg,WindowSize,step,fr_threshold);
+  %CurbBoxes=slideWindowWithIntegral(CurImg,WindowSize,step,fr_threshold);
   for k=1:size(CurbBoxes,1)
     CurImg(CurbBoxes(k,1):CurbBoxes(k,2),CurbBoxes(k,3):CurbBoxes(k,4))=0;
   end

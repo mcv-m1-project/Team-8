@@ -1,8 +1,8 @@
 addpath('SlidingWindow');
 
 BoundingBoxes=containers.Map;
-step = 3;
-fr_threshold = 0.1138;
+step = 8;
+fr_threshold = 0.3;
 directory='/home/ihcv08/m1-results/week3/output';
 
 MaskFiles=ListFiles(directory);
