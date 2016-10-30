@@ -6,7 +6,7 @@
 % Thresholds to classify objects as signal candidates or background.
 form_factor_min = 0.50;
 form_factor_max = 1.30;
-filling_ratio_min = 0.40;
+filling_ratio_min = 0.44;
 filling_ratio_max = 1;
 
 % Directories

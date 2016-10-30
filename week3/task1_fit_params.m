@@ -8,9 +8,9 @@
 % detector in the connected component approach.
 
 % Thresholds sets. For each threshold, we try one or several values.
-form_factor_min_trials = [0.45, 0.47, 0.49];
-form_factor_max_trials = [1.42, 1.44, 1.46];
-filling_ratio_min_trials = [0.45, 0.47, 0.49];
+form_factor_min_trials = [0.47, 0.48, 0.49, 0.50, 0.51];
+form_factor_max_trials = [1.30, 1.35, 1.40, 1.42, 1.44];
+filling_ratio_min_trials = [0.43, 0.44, 0.45, 0.47, 0.50, 0.55]
 filling_ratio_max_trials = [1];
 
 train_dir = '/home/ihcv08/dataset/trial3/puretrain';
