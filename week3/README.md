@@ -5,7 +5,7 @@ Definition of functions employed on each task
 
 
 ## Task 2 - Sliding Window 
-  #### slideWindow(Imag,WinSize,step,fr_threshold)
+#### slideWindow(Imag,WinSize,step,fr_threshold)
   
   * Imag: Input image.
   * WinSize: Sliding window size.
@@ -14,7 +14,7 @@ Definition of functions employed on each task
     
 
 ## Task 3 - Sliding Window (Integral Image) 
-  #### slideWindowWithIntegra(Imag,WinSize,step,fr_threshold)
+#### slideWindowWithIntegra(Imag,WinSize,step,fr_threshold)
   
   * Imag: Input image.
   * WinSize: Sliding window size.
@@ -26,20 +26,20 @@ Definition of functions employed on each task
 Set up parameters step and fr_threshold applied in Slide Window functions.
 
 ### Window Evaluation
-    **task2_validation.m** : Run to obtain Precision and Recall using simple Sliding Window.
+**task2_validation.m** : Run to obtain Precision and Recall using simple Sliding Window.
 
-    **task3_validation.m** : Run to Precision and Recall using Sliding Window applying integral image.
+**task3_validation.m** : Run to Precision and Recall using Sliding Window applying integral image.
 
-    **task5_validation.m** : Run to Precision and Recall files using Sliding Window applying Convolution.
+**task5_validation.m** : Run to Precision and Recall files using Sliding Window applying Convolution.
 
 
 
 ###Test Submission - Generation of masks and bounding boxes
-    **task2_test.m** : Run to generate submision files using simple Sliding Window.
+**task2_test.m** : Run to generate submision files using simple Sliding Window.
 
-    **task3_test.m** : Run to generate submision files using Sliding Window applying integral image.
+**task3_test.m** : Run to generate submision files using Sliding Window applying integral image.
 
-    **task5_test.m** : Run to generate submision files using Sliding Window applying Convolution.
+**task5_test.m** : Run to generate submision files using Sliding Window applying Convolution.
 
 
 ## Task 5 - Sliding Window (Convolution)
