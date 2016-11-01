@@ -15,7 +15,6 @@ function TrafficSignWindow_test(directory, model, backproj_thr, saturation_thr,o
     end
  
     for i=1:size(files,1),
-        
         %fprintf('%04d: %s\n', i, files(i).name);
 
         % Read file
@@ -32,8 +31,7 @@ function TrafficSignWindow_test(directory, model, backproj_thr, saturation_thr,o
         pixelCandidates = imfill(pixelCandidates,'holes');
         pixelCandidates = imopen(pixelCandidates, strel('disk', 7));     
         %pixelCandidates = imdilate(pixelCandidates, strel('disk', 4));
-        pixel_file = sprintf('%s/%s.png', output_dir, files(i).name(1:end-4));
-        imwrite(pixelCandidates, pixel_file);
+        
         
 
         
@@ -45,8 +43,11 @@ function TrafficSignWindow_test(directory, model, backproj_thr, saturation_thr,o
         for l=1:size(boxCandidates,1)
             windowCandidates = [windowCandidates;struct('x',boxCandidates(l,3),'y',boxCandidates(l,1),'w',(boxCandidates(l,4)-boxCandidates(l,3)),'h',(boxCandidates(l,2)-boxCandidates(l,1)))];
         end
+        filteredMask = filterWindowMask(pixelCandidates, windowCandidates);
         window_file = sprintf('%s/%s.mat', output_dir, files(i).name(1:end-4));
         save(window_file, 'windowCandidates');
+        pixel_file = sprintf('%s/%s.png', output_dir, files(i).name(1:end-4));
+        imwrite(filteredMask, pixel_file);
 
     end
 
