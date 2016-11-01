@@ -1,4 +1,4 @@
-function TrafficSignWindow_test(directory, model, backproj_thr, saturation_thr,ol_step,fr_threshold,output_dir)
+function TrafficSignWindowIntegral_test(directory, model, backproj_thr, saturation_thr,ol_step,fr_threshold,output_dir)
     % TrafficSignWindow_test
     % Perform first the color segmentation and apply then morphological operators.
     % Finally generate masks and mat file containing bounding boxes of
@@ -40,7 +40,7 @@ function TrafficSignWindow_test(directory, model, backproj_thr, saturation_thr,o
         % Candidate Generation (window)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %windowCandidates = CandidateGenerationWindow_Example(im, pixelCandidates, window_method); %%'SegmentationCCL' or 'SlidingWindow'  (Needed after Week 3)
         boxCandidates=containers.Map;
-        boxCandidates = CandidateBoxesByWindow(pixelCandidates,ol_step,fr_threshold);
+        boxCandidates = CandidateBoxesByWindowIntegral(pixelCandidates,ol_step,fr_threshold);
         windowCandidates = [];
         for l=1:size(boxCandidates,1)
             windowCandidates = [windowCandidates;struct('x',boxCandidates(l,3),'y',boxCandidates(l,1),'w',(boxCandidates(l,4)-boxCandidates(l,3)),'h',(boxCandidates(l,2)-boxCandidates(l,1)))];
@@ -55,4 +55,3 @@ function TrafficSignWindow_test(directory, model, backproj_thr, saturation_thr,o
 
 end
  
-

@@ -1,4 +1,4 @@
-function bBoxes = CandidateBoxesByWindow(Imag,step,fr_threshold)
+function bBoxes = CandidateBoxesByWindowIntegral(Imag,step,fr_threshold)
 
 %Constant Values
 MAX_H=220.53;
@@ -24,7 +24,7 @@ bBoxes = [];
 
 for i=1:length(factors)
   %figure;imshow(255*CurImg)
-  CurbBoxes=slideWindow(CurImg,WindowSize,step,fr_threshold);
+  CurbBoxes=slideWindowWithIntegral(CurImg,WindowSize,step,fr_threshold);
   for k=1:size(CurbBoxes,1)
     CurImg(CurbBoxes(k,1):CurbBoxes(k,2),CurbBoxes(k,3):CurbBoxes(k,4))=0;
   end
