@@ -1,4 +1,4 @@
-function [windowPrecision, windowAccuracy] = TrafficSignWindowIntegral_valid(directory, model, backproj_thr, saturation_thr,ol_step,fr_threshold)
+function [windowPrecision, windowSensitivity] = TrafficSignWindowIntegral_valid(directory, model, backproj_thr, saturation_thr,ol_step,fr_threshold)
     % TrafficSignDetection
     % Perform detection of Traffic signs on images. Detection is performed first at the pixel level
     % using a color segmentation. Then, using the color segmentation as a basis, the most likely window 
@@ -59,8 +59,8 @@ function [windowPrecision, windowAccuracy] = TrafficSignWindowIntegral_valid(dir
     end
 
     % Plot performance evaluation
-    [windowPrecision, windowAccuracy] = PerformanceEvaluationWindow(windowTP, windowFN, windowFP); % (Needed after Week 3)
-    [windowPrecision, windowAccuracy]
+    [windowPrecision, windowSensitivity] = PerformanceEvaluationWindow(windowTP, windowFN, windowFP); % (Needed after Week 3)
+    [windowPrecision, windowSensitivity]
     
 
 end
