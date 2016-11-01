@@ -29,7 +29,7 @@ function [summary, classes] = SummarizeSignalFeatures (features, signs, group_by
   % 'summary'    struct with field names: 'height', 'width',
   %              'form_factor', 'filling_ratio' and 'frequency'. Each
   %              field is a Nx4 matrix with the respective summary for
-  %              the N groups. Columns are the mean, std, max and min
+  %              the N groups. Columns are the mean, std, min and max
   %              values.
   % 'classes'    identifier for each class in the summary. The values
   %              are sorted, so that the first row in the summaries

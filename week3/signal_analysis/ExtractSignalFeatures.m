@@ -11,6 +11,10 @@ function [features signs] = ExtractSignalFeatures(dir)
   %             Columns: height, width, form factor and filling ratio.
   % - signs:    character vector with the type of each sign.
   %
+<<<<<<< HEAD
+=======
+  addpath(genpath('.'));
+>>>>>>> block3-task2-intra
   
   features = [];
   signs = '';
