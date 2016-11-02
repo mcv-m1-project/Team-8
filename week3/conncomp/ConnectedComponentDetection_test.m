@@ -63,6 +63,9 @@ function ConnectedComponentDetection_test(input_dir, ...
                                               filling_ratio_min, ...
                                               filling_ratio_max);
 
+        % Filter pixel mask with detected windows
+        pixelCandidates = filterWindowMask(pixelCandidates, windowCandidates);
+        
         % Save results
         pixel_file = sprintf('%s/%s.png', output_dir, files(i).name(1:end-4));
         imwrite(pixelCandidates, pixel_file);
