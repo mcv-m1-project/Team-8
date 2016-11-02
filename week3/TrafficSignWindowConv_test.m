@@ -39,7 +39,7 @@ function TrafficSignWindowConv_test(directory, model, backproj_thr, saturation_t
         boxCandidates = CandidateBoxesByWindowConv(pixelCandidates,ol_step,fr_threshold);
         windowCandidates = [];
         for l=1:size(boxCandidates,1)
-            windowCandidates = [windowCandidates;struct('x',boxCandidates(l,3),'y',boxCandidates(l,1),'w',(boxCandidates(l,4)-boxCandidates(l,3)),'h',(boxCandidates(l,2)-boxCandidates(l,1)))];
+            windowCandidates = [windowCandidates;struct('x',boxCandidates(l,3),'y',boxCandidates(l,1),'w',(boxCandidates(l,4)-boxCandidates(l,3)+1),'h',(boxCandidates(l,2)-boxCandidates(l,1)+1))];
         end
         filteredMask = filterWindowMask(pixelCandidates, windowCandidates);
         window_file = sprintf('%s/%s.mat', output_dir, files(i).name(1:end-4));
