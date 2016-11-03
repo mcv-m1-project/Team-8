@@ -1,4 +1,4 @@
-function [bincounts] = FormFactorHistograms(formfactors, signs, binranges)
+function [bincounts] = FeatureHistograms(data, signs, binranges)
 % formfactors: Nx1, signs: Nx1
     
     filters = {'A', 'B', 'CDE', 'F'};
@@ -14,7 +14,7 @@ function [bincounts] = FormFactorHistograms(formfactors, signs, binranges)
             mask = mask | signs == types(j);
         end
 
-        data = formfactors(mask);
-        bincounts = [bincounts; histc(data, binranges)'];
+        data_i = data(mask);
+        bincounts = [bincounts; histc(data_i, binranges)'];
     end
 end
