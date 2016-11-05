@@ -10,6 +10,8 @@ function [windowPrecision, windowSensitivity] = TrafficSignWindowEdge_valid(dire
     windowTP=0; windowFN=0; windowFP=0;
     files = ListFiles(directory);
     
+    %Edge Model Templates
+    dir_edges = '/home/ihcv08/Jordi/Team8/week4/edge_templates';
     tic
     disp(ol_step);
     for i=1:size(files,1),
@@ -30,19 +32,27 @@ function [windowPrecision, windowSensitivity] = TrafficSignWindowEdge_valid(dire
         pixelCandidates = imfill(pixelCandidates,'holes');
         pixelCandidates = imopen(pixelCandidates, strel('disk', 7));     
         
-        pixelEdges= edge(pixelCandidates,'Canny');
+        
         
         % Candidate Generation (window)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %windowCandidates = CandidateGenerationWindow_Example(im, pixelCandidates, window_method); %%'SegmentationCCL' or 'SlidingWindow'  (Needed after Week 3)
         boxCandidates=containers.Map;
-        boxCandidates = CandidateBoxesByWindowEdges(pixelEdges,ol_step,fr_threshold,overlap_margin);
+        boxCandidates = CandidateBoxesByWindowEdges(pixelCandidates,ol_step,fr_threshold,overlap_margin);
+      
         windowCandidates = [];
         for l=1:size(boxCandidates,1)
             windowCandidates = [windowCandidates;struct('x',boxCandidates(l,3),'y',boxCandidates(l,1),'w',(boxCandidates(l,4)-boxCandidates(l,3)),'h',(boxCandidates(l,2)-boxCandidates(l,1)))];
         end
+        %Evaluate distance transform correlation between the candidate
+        %windows and the edge templates
+        if length(windowCandidates) ~= 0;
+            edgeCandidates = EvaluateDistance(pixelCandidates,windowCandidates,dir_edges);
+        end
+        %edgeCandidates
+        
         % Accumulate object performance of the current image %
         windowAnnotations = LoadAnnotations(strcat(directory, '/gt/gt.', files(i).name(1:size(files(i).name,2)-3), 'txt'));
-        [localWindowTP, localWindowFN, localWindowFP] = PerformanceAccumulationWindow(windowCandidates, windowAnnotations);
+        [localWindowTP, localWindowFN, localWindowFP] = PerformanceAccumulationWindow(edgeCandidates, windowAnnotations);
         windowTP = windowTP + localWindowTP;
         windowFN = windowFN + localWindowFN;
         windowFP = windowFP + localWindowFP;
