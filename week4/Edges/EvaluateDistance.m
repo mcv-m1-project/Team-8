@@ -21,7 +21,7 @@ for i=1:length(windowCandidates)
        
         %Template modeling  
         edgeTemplate = imread(strcat(dir_edges,'/',templates(t).name));
-        edgeTemplate = imresize(edgeTemplate, [windowCandidates(i).h,windowCandidates(i).w]);        
+        windowCandidates(i)=imresize(windowCandidates(i),size(edgeTemplate));        
         
         if method=='DistanceOnLine'        
             if CropEdgesAreSimilar(bboxCandidate, edgeTemplate, threshold)  %threshold hardcoded
