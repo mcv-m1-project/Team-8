@@ -6,8 +6,11 @@ function edgeCandidates = EvaluateDistance(pixelCandidates,windowCandidates,dir_
 templates = ListFiles(dir_edges);
 edgeCandidates = [];
 
-for t=1:size(templates,1),
-    for i=1:length(windowCandidates)
+
+for i=1:length(windowCandidates)
+    matchesAny = False;
+    for t=1:size(templates,1)
+    
         
         %Window Image Cropping
         x1 = windowCandidates(i).x;
@@ -20,22 +23,25 @@ for t=1:size(templates,1),
         edgeTemplate = imread(strcat(dir_edges,'/',templates(t).name));
         edgeTemplate = imresize(edgeTemplate, [windowCandidates(i).h,windowCandidates(i).w]);        
         
-        %Edge Extraction
-        edgeTemplate = edge(edgeTemplate,'Canny');
-        bboxCandidate = edge(bboxCandidate, 'Canny');
-        %Compute Distance Transform    
-        distBboxCandidate = bwdist(bboxCandidate);
-        distEdgeTemplate = bwdist(edgeTemplate);
-        %Compute cross-correlation
-        sim = corr2(distBboxCandidate,distEdgeTemplate);
-        sim
-        %Evaluate correlation
-        if(sim >= -1 && sim <=1)
-            edgeCandidates =[edgeCandidates; windowCandidates(i)];
+        if CropEdgesAreSimilar(bboxCandidate, edgeTemplate, 10)  %threshold hardcoded
+            matchesAny = True;
         end
-        %edgeCandidates = windowCandidates;
+            
+        
+        
+%         %Compute cross-correlation
+%         sim = corr2(distBboxCandidate,distEdgeTemplate);
+%         sim
+%         %Evaluate correlation
+%         if(sim >= -1 && sim <=1)
+%             edgeCandidates =[edgeCandidates; windowCandidates(i)];
+%         end
+%         %edgeCandidates = windowCandidates;
         
      
+    end
+    if matchesAny
+        edgeCandidates =[edgeCandidates; windowCandidates(i)];
     end
 end
    
