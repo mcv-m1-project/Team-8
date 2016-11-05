@@ -1,4 +1,4 @@
-function [windowPrecision, windowSensitivity] = TrafficSignWindowEdge_valid(directory, model, backproj_thr, saturation_thr,ol_step,fr_threshold,overlap_margin)
+function [windowPrecision, windowSensitivity] = TrafficSignWindowEdge_valid(directory, model, backproj_thr, saturation_thr,ol_step,fr_threshold,overlap_margin,method,dist_thresh)
     % TrafficSignWindowEdge
     % Perform detection of Traffic signs on images. Detection is performed first at the pixel level
     % using a color segmentation. Then, using the color segmentation as a basis, the most likely window 
@@ -46,7 +46,7 @@ function [windowPrecision, windowSensitivity] = TrafficSignWindowEdge_valid(dire
         %Evaluate distance transform correlation between the candidate
         %windows and the edge templates
         if length(windowCandidates) ~= 0;
-            edgeCandidates = EvaluateDistance(pixelCandidates,windowCandidates,dir_edges);
+            edgeCandidates = EvaluateDistance(pixelCandidates,windowCandidates,dir_edges, method, dist_thersh);
         end
         %edgeCandidates
         

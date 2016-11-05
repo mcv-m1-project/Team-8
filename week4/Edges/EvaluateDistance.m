@@ -8,7 +8,7 @@ edgeCandidates = [];
 
 
 for i=1:length(windowCandidates)
-    matchesAny = False;
+    matchesAny = false;
     for t=1:size(templates,1)
     
         
@@ -25,11 +25,11 @@ for i=1:length(windowCandidates)
         
         if method=='DistanceOnLine'        
             if CropEdgesAreSimilar(bboxCandidate, edgeTemplate, threshold)  %threshold hardcoded
-                matchesAny = True;
+                matchesAny = true;
             end
         elseif method=='Correlation'
             if CropEdgesAreSimilarCor(bboxCandidate, edgeTemplate, threshold)  %threshold hardcoded
-                matchesAny = True;
+                matchesAny = true;
             end
         end    
     end
