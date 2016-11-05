@@ -11,4 +11,4 @@ distInCrop(distInCrop==Inf) = (size(crop,1)*size(crop,2))+1;
 
 sim = corr2(distInCrop,distEdgeTemplate);
 
-isSimilar = (sim > corThresh);
+isSimilar = (abs(sim) < corThresh);
