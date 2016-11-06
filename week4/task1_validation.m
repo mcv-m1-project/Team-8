@@ -1,9 +1,27 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Script for the Task1 validation.
+%
+% This script use the validation dataset to test several
+% threshold values in order to find the best one.
+%
+% The threshold to tune is the `cross correlation threshold`.
+% When performing cross correlation to an image with the signal
+% templates, if any window gets a result >= xcorr threshold, then
+% is labeled as `signal`, otherwise as `background`.
+
+% List of cross correlation thresholds to test. Values must be in
+% the range [0, 169].
 xcorr_thr_trials = 110:2:150;
 
+% This set the number of pyramid levels and the scaling factor
+% used in each one. It must be sorted from the biggest to the smallest.
 pyr_scales = [1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1];
+
+% Maximun overlapping allowed before applying non-maximun
+% suppression to the candidate bounding boxes.
 overlap_thr = 0.50;
 
+% Directories
 train_dir = '/home/ihcv08/dataset/trial3/puretrain';
 valid_dir = '/home/ihcv08/dataset/trial3/validation';
 result_subdir = '';  % Leave empty when not debugging

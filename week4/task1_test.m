@@ -8,7 +8,8 @@
 % Threshold to consider a detection as positive. Value in [0, 169].
 xcorr_thr = 138;
 
-% Factors to use in each level of the pyramid
+% This set the number of pyramid levels and the scaling factor
+% used in each one. It must be sorted from the biggest to the smallest.
 pyr_scales = [1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1];
 
 % Maximun overlapping allowed before applying non-maximun
