@@ -1,6 +1,6 @@
 addpath(genpath('.'))
-template_dir = '/home/ihcv08/Jordi/Team8/week4/image_templates';
-edgetemplate_dir = '/home/ihcv08/Jordi/Team8/week4/edge_templates';
+template_dir = 'image_templates/50x50/';
+edgetemplate_dir = 'edge_templates/';
 
 files = ListFiles(template_dir);
     
