@@ -23,13 +23,14 @@ function [newim] = DrawBoundingBoxes(im, detections, annotations)
     detectionsUsed = zeros(1,size(detections,1));
     annotationsUsed = zeros(1,size(annotations,1));
     newim = cat(3, im, im, im) * 255;
+    [h, w] = size(im);
     
     % Draw TP
     for i=1:size(detections,1)
-        x1 = round(detections(i).x);
-        y1 = round(detections(i).y);
-        x2 = round(detections(i).x + detections(i).w - 1);
-        y2 = round(detections(i).y + detections(i).h - 1);
+        x1 = max(round(detections(i).x), 1);
+        y1 = max(round(detections(i).y), 1);
+        x2 = min(round(detections(i).x + detections(i).w - 1), w);
+        y2 = min(round(detections(i).y + detections(i).h - 1), h);
         
         for j=1:size(annotations,1)
             if RoiOverlapping(annotations(j), detections(i)) > 0.5
@@ -47,10 +48,10 @@ function [newim] = DrawBoundingBoxes(im, detections, annotations)
 
     % Draw FP
     for i=1:size(detections, 1)
-        x1 = round(detections(i).x);
-        y1 = round(detections(i).y);
-        x2 = round(detections(i).x + detections(i).w - 1);
-        y2 = round(detections(i).y + detections(i).h - 1);
+        x1 = max(round(detections(i).x), 1);
+        y1 = max(round(detections(i).y), 1);
+        x2 = min(round(detections(i).x + detections(i).w - 1), w);
+        y2 = min(round(detections(i).y + detections(i).h - 1), h);
 
         if detectionsUsed(i) == 0
             newim(y1:y2, x1, 1) = 255;
@@ -62,10 +63,10 @@ function [newim] = DrawBoundingBoxes(im, detections, annotations)
     
     % Draw FN
     for i=1:size(annotations, 1)
-        x1 = round(annotations(i).x);
-        y1 = round(annotations(i).y);
-        x2 = round(annotations(i).x + annotations(i).w - 1);
-        y2 = round(annotations(i).y + annotations(i).h - 1);
+        x1 = max(round(annotations(i).x), 1);
+        y1 = max(round(annotations(i).y), 1);
+        x2 = min(round(annotations(i).x + annotations(i).w - 1), w);
+        y2 = min(round(annotations(i).y + annotations(i).h - 1), h);
 
         if annotationsUsed(i) == 0
             newim(y1:y2, x1, 1) = 255;
