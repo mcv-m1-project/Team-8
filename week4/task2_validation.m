@@ -19,6 +19,10 @@ step_w = 8;
 fr_threshold = 0.3;
 %overlap_margin
 overlap_margin = 24;
+
+dist_eval_method='DistanceOnLine';
+
+dist_thresh=1100;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 addpath(genpath('.'))
@@ -31,7 +35,7 @@ addpath(genpath('.'))
 [windowPrecision, windowSensitivity] = TrafficSignWindowEdge_valid(valid_dir, ...
                      color_model, ...
                      backproj_thr, ...
-                     saturation_thr,step_w,fr_threshold,overlap_margin);
+                     saturation_thr,step_w,fr_threshold,overlap_margin, dist_eval_method, dist_thresh);
                  
 F1_score = 2*((windowPrecision * windowSensitivity)/(windowPrecision + windowSensitivity))
    
