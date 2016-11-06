@@ -45,7 +45,7 @@ function TrafficSignWindowEdge_test(directory, model, backproj_thr, saturation_t
             windowCandidates = [windowCandidates;struct('x',boxCandidates(l,3),'y',boxCandidates(l,1),'w',(boxCandidates(l,4)-boxCandidates(l,3)+1),'h',(boxCandidates(l,2)-boxCandidates(l,1)+1))];
         end
         if length(windowCandidates) ~= 0;
-            edgeCandidates = EvaluateDistance(pixelCandidates,windowCandidates,dir_edges, dist_eval_method, dist_thresh);
+            edgeCandidates = EvaluateDistance(pixelCandidates,windowCandidates,dir_edges, dist_thresh);
         end
         edgeCandidates
         filteredMask = filterWindowMask(pixelCandidates, edgeCandidates);
