@@ -9,6 +9,9 @@ function filteredMask = filterWindowMask(mask, bboxes)
         wh = bboxes(i).h;
         imwindow(wy:wy+wh-1, wx:wx+ww-1) = 1;
     end
-    filteredMask = mask .* imwindow;
+    % Workarround to fix problems with bounding boxes exceeding image
+    % dimensions.
+    [h, w] = size(mask);
+    filteredMask = mask .* imwindow(1:h, 1:w);
 end
     
