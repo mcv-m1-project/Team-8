@@ -36,7 +36,7 @@ overlap_margin = 24;
 %Distance Transform Evaluation Method
 dist_eval_method='DistanceOnLine';
 % Distance Transform Evaluation Threshold
-dist_thresh=300;
+dist_thresh=850;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 addpath(genpath('.'))
@@ -45,6 +45,6 @@ addpath(genpath('.'))
 TrafficSignWindowEdge_test(test_dir, ...
                      color_model, ...
                      backproj_thr, ...
-                     saturation_thr,step_w,fr_threshold,overlap_margin, dist_eval_method, dist_thresh,output_dir);
+                     saturation_thr,step_w,fr_threshold,overlap_margin, dist_thresh,output_dir);
                  %F1_score = 2*((windowPrecision * windowAccuracy)/(windowPrecision + windowAccuracy))
                 

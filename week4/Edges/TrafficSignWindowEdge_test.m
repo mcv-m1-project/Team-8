@@ -1,4 +1,4 @@
-function TrafficSignWindowEdge_test(directory, model, backproj_thr, saturation_thr,ol_step,fr_threshold,overlap_margin, dist_eval_method, dist_thresh, output_dir)
+function TrafficSignWindowEdge_test(directory, model, backproj_thr, saturation_thr,ol_step,fr_threshold,overlap_margin, dist_thresh, output_dir)
     % TrafficSignWindow_test
     % Perform first the color segmentation and apply then morphological operators.
     % Finally generate masks and mat file containing bounding boxes of
