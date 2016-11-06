@@ -1,4 +1,26 @@
-function bboxes2 = NonMaximumSuppression(bboxes, scores, overlap_thr)
+function bboxes2 = NonMaximumSuppression(bboxes, ...
+                                         scores, ...
+                                         overlap_thr)
+% NonMaximumSuppression
+%
+% Apply non maximum suppression to select the best bounding box
+% among each set of overlapping boxes.
+% 
+%  function [bboxes2] = NonMaximumSuppression(...)
+% 
+%    Parameter name      Value
+%    --------------      -----
+%    bboxes              Nx4 array with the initial bounding boxes.
+%                        Array columns: x, y, width, height.
+%    scores              Nx1 array with the score obtained for each
+%                        bounding box when comparing with the
+%                        templates.
+%    overlap_thr         When two bounding boxes are overlapped for
+%                        a factor of `overlap_thr` or greater, the
+%                        non-max suppression strategy is applied to
+%                        select only one candidate.
+%
+% The result is another bounding box array of Mx4, where M <= N.
 
     % If there are no boxes, return an empty array
     if length(bboxes) == 0

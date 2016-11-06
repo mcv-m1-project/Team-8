@@ -5,28 +5,31 @@ function TrafficSignDetectionXCorr_test(input_dir, ...
                                         pyr_scales, ...
                                         xcorr_thr, ...
                                         overlap_thr)
-    % TrafficSignDetectionXCorr_test
-    % Perform detection of Traffic signs on images. Detection is
-    % performed first at the pixel level using a color
-    % segmentation. Then, using the color segmentation as a basis, 
-    % the most likely window candidates to contain a traffic sign
-    % are selected using template matching with cross correlation.
-    %
-    %    Parameter name      Value
-    %    --------------      -----
-    %    'input_dir'         Directory where the test images to analize (.jpg) reside.
-    %    'output_dir'        Directory where the results will be stored.
-    %    'model'             Array with the chroma model to use in
-    %                        color segmentation.
-    %    'templates'         Templates to use in signal detection. 
-    %                        Given as a cell array of binary images.
-    %    'pyr_scales'        Factors to apply in each pyramid
-    %                        level. Vector sorted from biggest to smallest.
-    %    'xcorr_thr'         Threshold to consider a matching as a
-    %                        positive detection.
-    %    'overlap_thr'       Max % of overlapping allowed before
-    %                        applying non-maximum suppression.
-    
+% TrafficSignDetectionXCorr_test
+%
+% Perform detection of Traffic signs on images. Detection is
+% performed first at the pixel level using a color
+% segmentation. Then, using the color segmentation as a basis, 
+% the most likely window candidates to contain a traffic sign
+% are selected using template matching with cross correlation.
+%
+% Use this function to create the week submission for Block 4 - Task 1.
+%
+%    Parameter name      Value
+%    --------------      -----
+%    'input_dir'         Directory where the test images to analize (.jpg) reside.
+%    'output_dir'        Directory where the results will be stored.
+%    'model'             Array with the chroma model to use in
+%                        color segmentation.
+%    'templates'         Templates to use in signal detection. 
+%                        Given as a cell array of binary images.
+%    'pyr_scales'        Factors to apply in each pyramid
+%                        level. Vector sorted from biggest to smallest.
+%    'xcorr_thr'         Threshold to consider a matching as a
+%                        positive detection.
+%    'overlap_thr'       Max % of overlapping allowed before
+%                        applying non-maximum suppression.
+
     if exist(output_dir, 'dir') == 0
         mkdir(output_dir);
     end

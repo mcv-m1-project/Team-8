@@ -27,7 +27,7 @@ function [windowTP, windowFP, windowFN] = TrafficSignDetectionXCorr(valid_dir, .
 %    xcorr_thr           Minimum value in a cross correlation
 %                        result to consider a positive matching
 %                        between an image and a pattern.
-%    result_subdir       Optinal parameter. String with the folder name
+%    result_subdir       Optional parameter. String with the folder name
 %                        where to store the validation
 %                        results. For each image several rects are
 %                        drawn, with the TP, FP and FN results.

@@ -1,9 +1,27 @@
-function [bboxarr, score] = XCorrTemplateMatching(pyramid, patterns, threshold)
-% pyramid: cell array of binary images (pixel values: 0/1) (the
-%          first one must be the original)
-% patterns: cell array of images (pixel values: 0/1)
-% ---
-% bboxarr: Nx4 matrix (columns: x, y, width, height)
+function [bboxarr, score] = XCorrTemplateMatching(pyramid, patterns, ...
+                                                  threshold)
+% XCorrTemplateMatching
+%
+% Perform the detection of traffic signs over a pyramid of images.
+% For that purpose a cross correlation template matching is used.
+%
+%  function [bboxarr, score] = XCorrTemplateMatching(...)
+%
+%    Parameter name      Value
+%    --------------      -----
+%    pyramid             Cell array of the same image at different
+%                        scales. The first image must be the
+%                        biggest one. All images must be binary.
+%    patterns            Cell array with the pattern images. All
+%                        of them must be binary images.
+%    threshold           Minimum value for a cross correlation
+%                        result to consider a positive matching
+%                        between an image and a pattern.
+%
+% Two values are returned: `bboxarr` is a Nx4 matrix with the
+% properties of the detected bounding boxes (x, y, width, height).
+% `score` is a Nx1 column vector with the cross correlation score
+% for each detected bounding box.
 
     bboxarr = [];
     score = [];
