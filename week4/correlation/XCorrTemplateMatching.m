@@ -5,13 +5,19 @@ function [bboxarr, score] = XCorrTemplateMatching(pyramid, patterns, threshold)
 % ---
 % bboxarr: Nx4 matrix (columns: x, y, width, height)
 
+    bboxarr = [];
+    score = [];
+
+    % Optimization: if there is no pixel candidates, exit early
+    if sum(sum(pyramid{1})) == 0
+        return
+    end
+
     % Convert pixel values from 0/1 into -1/1
     fn = @(im) 2 * im - 1;
     pyramid = cellfun(fn, pyramid, 'UniformOutput', 0);
     patterns = cellfun(fn, patterns, 'UniformOutput', 0);
     
-    bboxarr = [];
-    score = [];
     for i = 1:length(patterns)
         for j = 1:length(pyramid)
             % Find positive detections (coords and scores)

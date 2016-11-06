@@ -42,7 +42,7 @@ function bboxes2 = NonMaximumSuppression(bboxes, scores, overlap_thr)
     	h = max(0, yy2 - yy1 + 1);
 
         % Compute the ratio of overlap
-        overlap = (w .* h) ./ area(idxs_rem);
+        overlap = (w .* h) ./ min(area(i), area(idxs_rem));
 
         % Delete all indexes from the index list that have
         % a ratio of overlap greater than the given threshold
