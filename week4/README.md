@@ -2,12 +2,12 @@
 Definition of functions employed on each task
 
 ## Task 0 - Sliding Window
-###CandidateBoxesByWindow(Imag,step,fr_threshold,margin)
+####CandidateBoxesByWindow(Imag,step,fr_threshold,margin)
 
-  *Imag: Input image.
-  *step: window step size.
-  *fr_threshold: min filling ratio to consider valid region.
-  *margin: minimum overlapped pixels of two candidates to keep just one of them
+  * Imag: Input image.
+  * step: window step size.
+  * fr_threshold: min filling ratio to consider valid region.
+  * margin: minimum overlapped pixels of two candidates to keep just one of them
 
 
 ## Task 1 - Template matching with correlation
