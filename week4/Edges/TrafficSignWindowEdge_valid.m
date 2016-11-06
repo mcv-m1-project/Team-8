@@ -46,7 +46,10 @@ function [windowPrecision, windowSensitivity] = TrafficSignWindowEdge_valid(dire
         %Evaluate distance transform correlation between the candidate
         %windows and the edge templates
         if length(windowCandidates) ~= 0;
-            edgeCandidates = EvaluateDistance(pixelCandidates,windowCandidates,dir_edges, method, dist_thersh);
+            if method =='DistanceOnLine'
+                edgeCandidates = EvaluateDistance(pixelCandidates,windowCandidates,dir_edges, dist_thresh);
+            elseif method=='UseCorrelation'
+            end
         end
         %edgeCandidates
         

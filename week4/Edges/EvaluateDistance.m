@@ -1,4 +1,4 @@
-function edgeCandidates = EvaluateDistance(pixelCandidates,windowCandidates,dir_edges, method, threshold)
+function edgeCandidates = EvaluateDistance(pixelCandidates,windowCandidates,dir_edges, threshold)
 %Obtain correlation between template read from dir_edges and the input
 %Window composed by image pixelCandidates and gorund turth windowCandidates
 %returns an array of structs edgeCandidates which contain the selected
@@ -21,16 +21,10 @@ for i=1:length(windowCandidates)
        
         %Template modeling  
         edgeTemplate = imread(strcat(dir_edges,'/',templates(t).name));
-        windowCandidates(i)=imresize(windowCandidates(i),size(edgeTemplate));        
+        bboxCandidate=imresize(bboxCandidate,size(edgeTemplate));        
         
-        if method=='DistanceOnLine'        
-            if CropEdgesAreSimilar(bboxCandidate, edgeTemplate, threshold)  %threshold hardcoded
-                matchesAny = true;
-            end
-        elseif method=='Correlation'
-            if CropEdgesAreSimilarCor(bboxCandidate, edgeTemplate, threshold)  %threshold hardcoded
-                matchesAny = true;
-            end
+        if CropEdgesAreSimilar(bboxCandidate, edgeTemplate, threshold)  %threshold hardcoded
+            matchesAny = true;
         end    
     end
     if matchesAny

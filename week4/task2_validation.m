@@ -22,7 +22,7 @@ overlap_margin = 24;
 
 dist_eval_method='DistanceOnLine';
 
-dist_thresh=300;
+dist_thresh=1100;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 addpath(genpath('.'))
