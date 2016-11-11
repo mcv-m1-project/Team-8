@@ -64,7 +64,7 @@ function [windowTP, windowFP, windowFN] = EvaluateFilterPerformance(valid_dir, .
                                  form_factor_max);
             
             % Select candidate when passing all filters
-            if a & b & c
+            if a && b && c
                 % Object detection
                 b.x = stats(j).left;
                 b.y = stats(j).top;
