@@ -56,7 +56,7 @@ function parsedRegions = UCMSegmentation(imag, ucm_th, scale)
       
       curRegion.maskcrop = finalMaskCrop;
       
-      curRegion.imgcrop = imag(resizedT:resizedB,resizedL:resizedR);
+      curRegion.imgcrop = imag(resizedT:resizedB,resizedL:resizedR,:);
       
       parsedRegions = [parsedRegions;curRegion];
       
