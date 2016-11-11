@@ -16,9 +16,11 @@ function parsedRegions = UCMSegmentation(imag, ucm_th, scale)
    
    smallImg = imresize(imag,scale);
    
-   segmentedImg = segment_ucm (smallImg, ucm_th);
+   segmentedImg = segment_ucm(smallImg, ucm_th);
    
    num_regions = max(max(segmentedImg));
+   
+   parsedRegions = [];
    
    for i=1:num_regions
       
@@ -26,7 +28,6 @@ function parsedRegions = UCMSegmentation(imag, ucm_th, scale)
       
       bBox = regionprops(BW,'BoundingBox');
       
-      bBox(1)
       left = ceil(bBox(1));
       right = floor(bBox(3)+bBox(1));
       top = ceil(bBox(2));
@@ -39,22 +40,23 @@ function parsedRegions = UCMSegmentation(imag, ucm_th, scale)
       resizedT = floor(top/scale);
       resizedB = ceil(bott/scale);
       
-      parsedRegions(i).bBox.Left = resizedL;
-      parsedRegions(i).bBox.Right = resizedR;
-      parsedRegions(i).bBox.Top = resizedT;
-      parsedRegions(i).bBox.Bott = resizedB;
+      curRegion.bBox.Left = resizedL;
+      curRegion.bBox.Right = resizedR;
+      curRegion.bBox.Top = resizedT;
+      curRegion.bBox.Bott = resizedB;
       
-      parsedRegions(i).bBox.Width = parsedRegions(i).bBox.Right - parsedRegions(i).bBox.Left +1;
-      parsedRegions(i).bBox.Height = parsedRegions(i).bBox.Bott - parsedRegions(i).bBox.Top +1;
+      curRegion.bBox.Width = curRegion.bBox.Right - curRegion.bBox.Left +1;
+      curRegion.bBox.Height = curRegion.bBox.Bott - curRegion.bBox.Top +1;
       
       interpolMaskCrop = imresize(smallMaskCrop,(1/scale));
       
       finalMaskCrop = im2bw(interpolMaskCrop,0.5);
       
-      parsedRegions(i).maskcrop = finalMaskCrop;
+      curRegion.maskcrop = finalMaskCrop;
       
-      parsedRegions(i).imgcrop = imag(resizedT:resizedB,resizedL:resizedR);
+      curRegion.imgcrop = imag(resizedT:resizedB,resizedL:resizedR);
       
+      parsedRegions = [parsedRegions;curRegion];
       
    end
    
