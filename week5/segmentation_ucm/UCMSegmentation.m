@@ -1,19 +1,17 @@
 function parsedRegions = UCMSegmentation(imag, ucm_th, scale)
-% Segment an image by thresholding an UCM
-% Usage: seg = segment_ucm(ima, thresh)
+% Get region properties from image
+% Usage: parsedRegions = UCMSegmentation(imag, ucm_th, scale)
 %
 % INPUT:
-%    ima     : image to segment
-%    threesh : threshold to apply to the UCM
+%    imag     : image to segment
+%    ucm_th : threshold to apply to the UCM
+%    scale  : factor to resize the image to be processed
 % OUPUT
-%    seg : label image
+%    parsedRegions : regions with their properties (bounding box, original 
+%    crop and mask crop)
+   
+   %Downscale the image
 
-   %M_Orig=size(imag,1);
-   %N_Orig=size(imag,2);
-   
-   %M = round(M_Orig*scale);
-   %N = round(N_Orig*scale);
-   
    smallImg = imresize(imag,scale);
    
    segmentedImg = segment_ucm(smallImg, ucm_th);
@@ -23,6 +21,8 @@ function parsedRegions = UCMSegmentation(imag, ucm_th, scale)
    parsedRegions = [];
    
    for i=1:num_regions
+       
+      %Get each region and compute properties
       
       BW=(segmentedImg==i);
       
@@ -30,15 +30,15 @@ function parsedRegions = UCMSegmentation(imag, ucm_th, scale)
       
       bBox = stats.BoundingBox;
       
-      left = ceil(bBox(1));
-      right = floor(bBox(3)+bBox(1));
+      left = ceil(bBox(1));                     %ceil so it takes entire pixels from the first
+      right = floor(bBox(3)+bBox(1));           %floor so it takes entire pixels until the last
       top = ceil(bBox(2));
       bott = floor(bBox(4)+bBox(2));
  
       smallMaskCrop = BW(top:bott,left:right);
      
-      resizedL = floor(left/scale);
-      resizedR = ceil(right/scale);
+      resizedL = floor(left/scale);             %floor so it includes first pixel
+      resizedR = ceil(right/scale);             %ceil so it includes first pixel
       resizedT = floor(top/scale);
       resizedB = ceil(bott/scale);
       
@@ -50,7 +50,7 @@ function parsedRegions = UCMSegmentation(imag, ucm_th, scale)
       curRegion.bBox.Width = curRegion.bBox.Right - curRegion.bBox.Left +1;
       curRegion.bBox.Height = curRegion.bBox.Bott - curRegion.bBox.Top +1;
       
-      finalMaskCrop = imresize(smallMaskCrop,(1/scale));
+      finalMaskCrop = imresize(smallMaskCrop,(1/scale));    %No need to binarize
       
       curRegion.maskcrop = finalMaskCrop;
       
