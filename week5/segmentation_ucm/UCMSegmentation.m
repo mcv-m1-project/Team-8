@@ -26,7 +26,9 @@ function parsedRegions = UCMSegmentation(imag, ucm_th, scale)
       
       BW=(segmentedImg==i);
       
-      bBox = regionprops(BW,'BoundingBox');
+      stats = regionprops(BW,'BoundingBox');
+      
+      bBox = stats.BoundingBox;
       
       left = ceil(bBox(1));
       right = floor(bBox(3)+bBox(1));
