@@ -15,6 +15,6 @@
 % ------------------------------------------------------------------------
 function root_dir = root_dir()
 if strcmp(computer(), 'GLNXA64')
-   root_dir = '/home/ihcv08/Ignasi/Repos/Team8/week5/segment-ucm/MCG-PreTrained';
+   root_dir = './ucm/MCG-PreTrained';
 end
 end
