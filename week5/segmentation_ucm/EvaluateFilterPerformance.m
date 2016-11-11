@@ -48,28 +48,36 @@ function [windowTP, windowFP, windowFN] = EvaluateFilterPerformance(valid_dir, .
         mask_file = ['mask.', im_files(i).name(1:end-3), 'png'];
         pixelAnnotation = imread([valid_dir, '/mask/', mask_file]);
         
-        load('stats', [ucm_dir, '/', im_files(i).name(1:end-3), ...
-                       'mat']);
+        load([ucm_dir, '/', im_files(i).name(1:end-3), 'mat'], ...
+             'stats');
 
         bboxes = [];
+        pixelCandidates = zeros(size(pixelAnnotation));
         for j=1:size(stats, 2)
-            %filters
+            % Filters
+            a = AreaFilter(stats(j), area_min, area_max);
+            b = FillingRatioFilter(stats(j), ...
+                                   filling_ratio_min, ...
+                                   filling_ratio_max);
+            c = FormFactorFilter(stats(j), ...
+                                 form_factor_min, ...
+                                 form_factor_max);
             
-                        
-            % Convert bounding boxes to proper format (array of structs)
-            bboxes = BoundingBoxesToStruct(bboxarr);
+            % Select candidate when passing all filters
+            if a && b && c
+                % Object detection
+                b.x = stats(j).left;
+                b.y = stats(j).top;
+                b.width = stats(j).width;
+                b.height = stats(j).height;
+                bboxes = [bboxes; b];
+                
+                % Pixel detection
+                pixelCandidates(stats(j).top:stats(j).bott, ...
+                                stats(j).left:stats(j).right) = stats(j).maskcrop;                    
+            end
         end
-        
-        % Filter pixel mask with detected windows
-        pixelCandidates = filterWindowMask(im, bboxes);
-        
-        % Compute performance (object level)
-        [localTP, localFN, localFP] = PerformanceAccumulationWindow(bboxes, ...
-                                                          windowAnnotations);
-        windowTP = windowTP + localTP;
-        windowFP = windowFP + localFP;
-        windowFN = windowFN + localFN;
-        
+
         % Compute performance (pixel level)
         [localTP, localFP, localFN, localTN] = ...
             PerformanceAccumulationPixel(pixelCandidates, ...
@@ -77,14 +85,14 @@ function [windowTP, windowFP, windowFN] = EvaluateFilterPerformance(valid_dir, .
         pixelTP = pixelTP + localTP;
         pixelFP = pixelFP + localFP;
         pixelFN = pixelFN + localFN;
-        pixelTN = pixelTN + localTN;
-       
-        if ~isempty(result_subdir)
-            imresult = DrawBoundingBoxes(im, bboxes, windowAnnotations);
-            imwrite(imresult, ...
-                    [valid_dir, '/', result_subdir, '/', ...
-                     im_files(i).name(1:end-3), 'png']);
-        end
+        pixelTN = pixelTN + localTN;        
+        
+        % Compute performance (object level)
+        [localTP, localFN, localFP] = PerformanceAccumulationWindow(bboxes, ...
+                                                          windowAnnotations);
+        windowTP = windowTP + localTP;
+        windowFP = windowFP + localFP;
+        windowFN = windowFN + localFN;
     end
     toc
 
