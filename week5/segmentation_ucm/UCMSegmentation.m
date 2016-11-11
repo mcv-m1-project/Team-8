@@ -50,9 +50,7 @@ function parsedRegions = UCMSegmentation(imag, ucm_th, scale)
       curRegion.bBox.Width = curRegion.bBox.Right - curRegion.bBox.Left +1;
       curRegion.bBox.Height = curRegion.bBox.Bott - curRegion.bBox.Top +1;
       
-      interpolMaskCrop = imresize(smallMaskCrop,(1/scale));
-      
-      finalMaskCrop = im2bw(interpolMaskCrop,0.5);
+      finalMaskCrop = imresize(smallMaskCrop,(1/scale));
       
       curRegion.maskcrop = finalMaskCrop;
       
