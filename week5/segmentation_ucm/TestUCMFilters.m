@@ -1,6 +1,6 @@
-function [combinations, F1score, confmat, fig] = TestUCMFilters
-    (valid_dir, ucm_dir, area_min, area_max, valid_dir, form_factor_min, ...
-     form_factor_max, filling_ratio_min, filling_ratio_max)
+function [combinations, F1score, confmat, fig] = TestUCMFilters(...
+    valid_dir, ucm_dir, area_min, area_max, form_factor_min, ...
+    form_factor_max, filling_ratio_min, filling_ratio_max)
 % TestUCMFilters
 % 
 % For each combination of the given thresholds this function

@@ -45,6 +45,6 @@ function GenerateSegmentCandidates(input_dir, ...
         outfile = sprintf('%s/%s.mat', output_dir, ...
                           files(i).name(1:end-4));
 	    
-        save('stats', outfile);
+        save(outfile, 'stats');
     end
 end

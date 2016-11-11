@@ -11,9 +11,11 @@
 % values.
 ucm_thr = 0.4;
 ucm_scale = 1/2;
+area_min = [800];
+area_max = [60000];
 form_factor_min_trials = [0.47, 0.48, 0.49, 0.50, 0.51];
 form_factor_max_trials = [1.30, 1.35, 1.40, 1.42, 1.44];
-filling_ratio_min_trials = [0.43, 0.44, 0.45, 0.47, 0.50, 0.55]
+filling_ratio_min_trials = [0.43, 0.44, 0.45, 0.47, 0.50, 0.55];
 filling_ratio_max_trials = [1];
 
 train_dir = '/home/ihcv08/dataset/trial3/puretrain';
@@ -31,7 +33,7 @@ addpath(genpath('.'));
 % will be saved in different folders.
 ucm_dir = [valid_dir, '/ucm_thr_', num2str(ucm_thr)];
 
-if exist(pixelcand_dir) ~= 7
+if exist(ucm_dir) ~= 7
     GenerateSegmentCandidates(valid_dir, ...
                               ucm_dir, ...
                               ucm_thr, ...
@@ -40,6 +42,7 @@ end
 
 % Fit filter parameters
 [comb, F1score, confmat, fig] = TestUCMFilters(valid_dir, ...
+                                               ucm_dir, ...
                                                area_min, ...
                                                area_max, ...
                                                form_factor_min_trials, ...
