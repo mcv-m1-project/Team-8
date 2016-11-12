@@ -23,7 +23,9 @@ valid_dir = '/home/ihcv08/dataset/trial3/validation';
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-addpath(genpath('.'));
+addpath('./evaluation');
+addpath('./segmentation_ucm');
+addpath(genpath('./ucm'));
 
 % Generate ucm results before fit parameters. 
 % This save a lot of time!
