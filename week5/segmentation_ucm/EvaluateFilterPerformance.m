@@ -67,11 +67,11 @@ function [windowTP, windowFP, windowFN] = EvaluateFilterPerformance(valid_dir, .
             % Select candidate when passing all filters
             if a && b && c
                 % Object detection
-                b.x = stats(j).bBox.Left;
-                b.y = stats(j).bBox.Top;
-                b.w = stats(j).bBox.Width;
-                b.h = stats(j).bBox.Height;
-                bboxes = [bboxes; b];
+                new.x = stats(j).bBox.Left;
+                new.y = stats(j).bBox.Top;
+                new.w = stats(j).bBox.Width;
+                new.h = stats(j).bBox.Height;
+                bboxes = [bboxes; new];
                 
                 % Pixel detection
                 pixelCandidates(stats(j).bBox.Top:stats(j).bBox.Bott, ...
