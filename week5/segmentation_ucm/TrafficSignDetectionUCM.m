@@ -55,7 +55,7 @@ function [windowTP, windowFP, windowFN] = TrafficSignDetectionUCM(valid_dir, ...
         
         bboxes = [];
         
-        pixelCandidates = zeros(size(pixelAnnotation));
+        pixelCandidates = zeros(size(pixelAnnotation, 1), size(pixelAnnotation, 2));
         for j=1:size(stats, 1)
            % Filters
             a = AreaUCMFilter(stats(j), area_max, area_min);
