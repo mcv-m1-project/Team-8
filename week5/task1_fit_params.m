@@ -15,7 +15,7 @@
 %WEEK 5 MODIFICATIONS
 form_factor_min_trials = [0.49];
 form_factor_max_trials = [1.30];
-filling_ratio_min_trials = [0.44]
+filling_ratio_min_trials = [0.44];
 filling_ratio_max_trials = [1];
 
 train_dir = '/home/ihcv08/dataset/trial3/puretrain';
@@ -45,11 +45,7 @@ if exist(pixelcand_dir) ~= 7
 end
 
 % Evaluate all the combinations for the threshold values 
-[combs, F1score, confmat, fig] = EvaluateConnCompThresholds(valid_dir, ...
-                                                  form_factor_min_trials, ...
-                                                  form_factor_max_trials, ...
-                                                  filling_ratio_min_trials, ...
-                                                  filling_ratio_max_trials);
+[combs, F1score, confmat, fig] = EvaluateConnCompThresholds(valid_dir, form_factor_min_trials, form_factor_max_trials, filling_ratio_min_trials, filling_ratio_max_trials);
 
 % Print F1-score for each threshold combination
 fprintf('Summary of trials and their F1-score, TP, FP, FN:\n');

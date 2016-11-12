@@ -38,8 +38,7 @@ function [combinations, F1score, confmat, fig] = EvaluateConnCompThresholds ...
     combinations = [];
     TP = [];
     FP = [];
-    FN = [];
-    
+    FN = [];  
     for i=1:max_i
         for j=1:max_j
             for k=1:max_k
