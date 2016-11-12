@@ -1,4 +1,4 @@
-function ok = Area_Filter (candidate, thr_max, thr_min)
+function ok = AreaFilter (candidate, thr_max, thr_min)
 % Check if candidate area is between limits
 % Usage: ok = Area_Filter (candidate, thr_max, thr_min)
 %
@@ -9,9 +9,9 @@ function ok = Area_Filter (candidate, thr_max, thr_min)
 % OUPUT
 %    ok : 1 if candidate is valid, 0 if not
 
-candArea = candidate.height * candidate.width;
+candArea = candidate.bBox.Height * candidate.bBox.Width;
 
-if candArea < thr_min | candArea > thr_max  
+if candArea < thr_min || candArea > thr_max  
   ok = false;  
 else
   ok = true;
