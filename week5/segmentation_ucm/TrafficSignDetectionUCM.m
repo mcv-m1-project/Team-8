@@ -54,16 +54,33 @@ function [windowTP, windowFP, windowFN] = TrafficSignDetectionUCM(valid_dir, ...
         stats = UCMSegmentation(im, ucm_thr, ucm_scale);
         
         bboxes = [];
-        for j=1:size(stats, 2)
-            %filters
-            
-                        
-            % Convert bounding boxes to proper format (array of structs)
-            bboxes = BoundingBoxesToStruct(bboxarr);
-        end
         
-        % Filter pixel mask with detected windows
-        pixelCandidates = filterWindowMask(im, bboxes);
+        pixelCandidates = zeros(size(pixelAnnotation));
+        for j=1:size(stats, 1)
+           % Filters
+            a = AreaUCMFilter(stats(j), area_max, area_min);
+            b = FillingRatioUCMFilter(stats(j), ...
+                                      filling_ratio_max, ...
+                                      filling_ratio_min);
+            c = FormFactorUCMFilter(stats(j), ...
+                                    form_factor_max, ...
+                                    form_factor_min);
+            
+            % Select candidate when passing all filters
+            if a && b && c
+                % Object detection
+                new.x = stats(j).bBox.Left;
+                new.y = stats(j).bBox.Top;
+                new.w = stats(j).bBox.Width;
+                new.h = stats(j).bBox.Height;
+                bboxes = [bboxes; new];
+                
+                % Pixel detection
+                pixelCandidates(stats(j).bBox.Top:stats(j).bBox.Bott, ...
+                                stats(j).bBox.Left:stats(j).bBox.Right) = pixelCandidates(stats(j).bBox.Top:stats(j).bBox.Bott, ...
+                                  stats(j).bBox.Left:stats(j).bBox.Right) | stats(j).maskcrop(1:end-1,1:end-1);     
+            end  
+        end
         
         % Compute performance (object level)
         [localTP, localFN, localFP] = PerformanceAccumulationWindow(bboxes, ...
