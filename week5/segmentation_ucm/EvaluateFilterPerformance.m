@@ -52,29 +52,30 @@ function [windowTP, windowFP, windowFN] = EvaluateFilterPerformance(valid_dir, .
              'stats');
 
         bboxes = [];
+        
         pixelCandidates = zeros(size(pixelAnnotation));
         for j=1:size(stats, 2)
             % Filters
-            a = AreaFilter(stats(j), area_min, area_max);
+            a = AreaFilter(stats(j), area_max, area_min);
             b = FillingRatioFilter(stats(j), ...
-                                   filling_ratio_min, ...
-                                   filling_ratio_max);
+                                   filling_ratio_max, ...
+                                   filling_ratio_min);
             c = FormFactorFilter(stats(j), ...
-                                 form_factor_min, ...
-                                 form_factor_max);
+                                 form_factor_max, ...
+                                 form_factor_min);
             
             % Select candidate when passing all filters
             if a && b && c
                 % Object detection
-                b.x = stats(j).Left;
-                b.y = stats(j).Top;
-                b.width = stats(j).Width;
-                b.height = stats(j).Height;
+                b.x = stats(j).bBox.Left;
+                b.y = stats(j).bBox.Top;
+                b.w = stats(j).bBox.Width;
+                b.h = stats(j).bBox.Height;
                 bboxes = [bboxes; b];
                 
                 % Pixel detection
-                pixelCandidates(stats(j).Top:stats(j).Bott, ...
-                                stats(j).Left:stats(j).Right) = stats(j).maskcrop;                    
+                pixelCandidates(stats(j).bBox.Top:stats(j).bBox.Bott, ...
+                                stats(j).bBox.Left:stats(j).bBox.Right) = stats(j).maskcrop(1:end-1,1:end-1);                    
             end
         end
 
