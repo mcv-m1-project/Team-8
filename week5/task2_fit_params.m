@@ -11,11 +11,11 @@
 % values.
 ucm_thr = 0.4;
 ucm_scale = 1/2;
-area_min = [800];
-area_max = [60000];
-form_factor_min_trials = [0.47, 0.48, 0.49, 0.50, 0.51];
-form_factor_max_trials = [1.30, 1.35, 1.40, 1.42, 1.44];
-filling_ratio_min_trials = [0.43, 0.44, 0.45, 0.47, 0.50, 0.55];
+area_min = [800, 900, 1000, 1100];
+area_max = [2000, 4000, 8000, 16000, 30000];
+form_factor_min_trials = [0.45, 0.50, 0.55];
+form_factor_max_trials = [1.20, 1.40, 1.50];
+filling_ratio_min_trials = [0.40, 0.44, 0.48, 0.52, 0.60];
 filling_ratio_max_trials = [1];
 
 train_dir = '/home/ihcv08/dataset/trial3/puretrain';
@@ -43,7 +43,7 @@ if exist(ucm_dir) ~= 7
 end
 
 % Fit filter parameters
-[comb, F1score, confmat, fig] = TestUCMFilters(valid_dir, ...
+[combs, F1score, confmat, fig] = TestUCMFilters(valid_dir, ...
                                                ucm_dir, ...
                                                area_min, ...
                                                area_max, ...
@@ -60,8 +60,10 @@ disp(horzcat(combs, F1score, confmat));
 [best, idx] = max(F1score);
 
 fprintf('The best combination is:\n');
-fprintf('- form_factor_min: %f\n', combs(idx, 1));
-fprintf('- form_factor_max: %f\n', combs(idx, 2));
-fprintf('- filling_ratio_min: %f\n', combs(idx, 3));
-fprintf('- filling_ratio_max: %f\n', combs(idx, 4));
+fprintf('- area_min: %f\n', combs(idx, 1));
+fprintf('- area_max: %f\n', combs(idx, 2));
+fprintf('- form_factor_min: %f\n', combs(idx, 3));
+fprintf('- form_factor_max: %f\n', combs(idx, 4));
+fprintf('- filling_ratio_min: %f\n', combs(idx, 5));
+fprintf('- filling_ratio_max: %f\n', combs(idx, 6));
 fprintf('With a F1-score of %f\n', best);
