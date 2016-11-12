@@ -54,7 +54,7 @@ function [windowTP, windowFP, windowFN] = EvaluateFilterPerformance(valid_dir, .
         bboxes = [];
         
         pixelCandidates = zeros(size(pixelAnnotation));
-        for j=1:size(stats, 2)
+        for j=1:size(stats, 1)
             % Filters
             a = AreaFilter(stats(j), area_max, area_min);
             b = FillingRatioFilter(stats(j), ...
@@ -75,7 +75,8 @@ function [windowTP, windowFP, windowFN] = EvaluateFilterPerformance(valid_dir, .
                 
                 % Pixel detection
                 pixelCandidates(stats(j).bBox.Top:stats(j).bBox.Bott, ...
-                                stats(j).bBox.Left:stats(j).bBox.Right) = stats(j).maskcrop(1:end-1,1:end-1);                    
+                                stats(j).bBox.Left:stats(j).bBox.Right) = pixelCandidates(stats(j).bBox.Top:stats(j).bBox.Bott, ...
+                                  stats(j).bBox.Left:stats(j).bBox.Right) | stats(j).maskcrop(1:end-1,1:end-1);     
             end
         end
 
