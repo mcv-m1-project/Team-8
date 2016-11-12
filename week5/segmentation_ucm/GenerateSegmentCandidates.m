@@ -39,12 +39,18 @@ function GenerateSegmentCandidates(input_dir, ...
         im = imread(strcat(input_dir,'/',files(i).name));
         
         % UCM segmentation
-        stats = UCMSegmentation(im, ucm_thr, ucm_scale);
+        [stats, imlabel] = UCMSegmentation(im, ucm_thr, ucm_scale);
         
         % Save ucm result into mat file
-        outfile = sprintf('%s/%s.mat', output_dir, ...
+        matfile = sprintf('%s/%s.mat', output_dir, ...
                           files(i).name(1:end-4));
 	    
-        save(outfile, 'stats');
+        save(matfile, 'stats');
+        
+        % Save labeled image (useful for debugging)
+        pngfile = sprintf('%s/%s_seg.png', output_dir, ...
+                          files(i).name(1:end-4));
+        
+        imwrite(label2color(imlabel), pngfile);
     end
 end

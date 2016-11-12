@@ -1,4 +1,4 @@
-function parsedRegions = UCMSegmentation(imag, ucm_th, scale)
+function [parsedRegions, imlabel] = UCMSegmentation(imag, ucm_th, scale)
 % Get region properties from image
 % Usage: parsedRegions = UCMSegmentation(imag, ucm_th, scale)
 %
@@ -59,5 +59,7 @@ function parsedRegions = UCMSegmentation(imag, ucm_th, scale)
       parsedRegions = [parsedRegions;curRegion];
       
    end
+   
+   imlabel = segmentedImg;
    
 end
