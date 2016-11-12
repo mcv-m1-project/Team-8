@@ -48,8 +48,8 @@ function [windowTP, windowFP, windowFN] = EvaluateFilterPerformance(valid_dir, .
         mask_file = ['mask.', im_files(i).name(1:end-3), 'png'];
         pixelAnnotation = imread([valid_dir, '/mask/', mask_file]);
         
-        load('stats', [ucm_dir, '/', im_files(i).name(1:end-3), ...
-                       'mat']);
+        load([ucm_dir, '/', im_files(i).name(1:end-3), 'mat'], ...
+             'stats');
 
         bboxes = [];
         pixelCandidates = zeros(size(pixelAnnotation));
