@@ -1,52 +1,31 @@
-# Week 3
-Definition of functions employed on each task
+# Week 5
 
-## Task 1 - Connected Components
+## Task 1 - Hough Filtering
 
+Scripts:
 
-## Task 2 - Sliding Window 
-#### slideWindow(Imag,WinSize,step,fr_threshold)
-  
-  * Imag: Input image.
-  * WinSize: Sliding window size.
-  * step: window step size.
-  * fr_threshold: min filling ratio to consider valid region.
-    
+- task1_fit_params: we used this script to adjust the
+  threshold for Task 1. It execute a test with the validation
+  folder and ouputs some performance measures (F1-score, TP, FP,
+  etc.)
 
-## Task 3 - Sliding Window (Integral Image) 
-#### slideWindowWithIntegral(Imag,WinSize,step,fr_threshold)
-  
-  * Imag: Input image.
-  * WinSize: Sliding window size.
-  * step: window step size.
-  * fr_threshold: min filling ratio to consider valid region.
-      
-
-## Task 4 - Region Based Evaluation
-Set up parameters step and fr_threshold applied in Slide Window functions.
-
-### Window Evaluation
-* **task2_validation.m** : Run to obtain Precision and Recall using simple Sliding Window.
-
-* **task3_validation.m** : Run to Precision and Recall using Sliding Window applying integral image.
-
-* **task5_validation.m** : Run to Precision and Recall files using Sliding Window applying Convolution.
+- task1_test: script for the Task 1 submission. It performs backprojection,
+  morphology, connected component analysis and Hough filtering. The script
+  generates a folder with the results of applying this pipeline to
+  the test dataset.
 
 
+## Task 2 - Improve segmentation
 
-###Test Submission - Generation of masks and bounding boxes
-* **task2_test.m** : Run to generate submision files using simple Sliding Window.
+Scripts:
 
-* **task3_test.m** : Run to generate submision files using Sliding Window applying integral image.
+- task2_fit_params: this script evaluates several thresholds to filter
+  the partitions produced by the ucm algorithm. This helps us to find
+  the best parameters for our ucm segmentation approach.
 
-* **task5_test.m** : Run to generate submision files using Sliding Window applying Convolution.
+- task2_test: this script creates the submission for Task 2. We use UCM
+  segmentation and some subsequent filters to detect signals in the image.
+  The script generates a folder with the results of applying the system
+  to the test dataset.
 
 
-## Task 5 - Sliding Window (Convolution)
-#### slideWindowByConv(Imag,WinSize,step,fr_threshold)
-  
-  * Imag: Input image.
-  * WinSize: Sliding window size.
-  * step: window step size.
-  * fr_threshold: min filling ratio to consider valid region.
-      
